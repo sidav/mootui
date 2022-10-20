@@ -10,13 +10,15 @@ import (
 )
 
 func (ui *uiStruct) DrawGalaxy(g *game.Game) {
+	ui.game = g
 	io.screen.Clear()
 	stars := g.Galaxy.GetAllStars()
-	ui.drawCursor(g)
 	for _, star := range stars {
 		// fmt.Printf("STAR %d: %s at %d, %d\n", i, star.Name, star.X, star.Y)
 		ui.drawStar(star)
 	}
+	ui.drawCursor(g)
+	ui.drawSidebarForCursorContents()
 	io.screen.Show()
 }
 
@@ -39,6 +41,31 @@ func (ui *uiStruct) drawCursor(g *game.Game) {
 	io.putChar('┓', osx+cursorW, osy-1)
 	io.putChar('┗', osx, osy+2)
 	io.putChar('┛', osx+cursorW, osy+2)
+}
+
+func (ui *uiStruct) drawSidebarForCursorContents() {
+	cw, ch := io.getConsoleSize()
+	io.drawFilledRect(' ', cw-SIDEBAR_W, 0, SIDEBAR_W, ch-1)
+	io.setStyle(tcell.ColorBlue, tcell.ColorBlue)
+	io.drawRect(cw-SIDEBAR_W, 0, SIDEBAR_W, ch-1)
+
+	io.setStyle(tcell.ColorBlue, tcell.ColorBlack)
+	linesx := cw - SIDEBAR_W + 1
+	lineY := 1
+	star := ui.game.Galaxy.GetStarAt(ui.cursorX, ui.cursorY)
+	if star == nil {
+		io.putUncoloredString("Deep space", linesx, lineY)
+		return
+	}
+	io.putUncoloredString(star.Name, linesx, lineY)
+	lineY++
+	if star.GetColony() == nil {
+		io.putUncoloredString("UNCOLONIZED", linesx, lineY)
+		lineY++
+	} else {
+		io.putUncoloredString("Colony", linesx, lineY)
+		lineY++
+	}
 }
 
 func (ui *uiStruct) drawStar(star *game.StarStruct) {
