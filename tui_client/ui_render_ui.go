@@ -1,6 +1,7 @@
 package tui_client
 
 import (
+	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"moocli/game"
 )
@@ -46,11 +47,15 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 	io.putString(star.GetPlanet().GetPlanetTypeName(), linesx, liney)
 	liney++
 	if star.GetPlanet().IsColonized() {
+		// FOR COLONIZED PLANETS
 		io.setStyle(colorStringToTcell(star.GetPlanet().GetFaction().GetColorName()), tcell.ColorBlack)
 		io.putString("Colony", linesx, liney)
 	} else {
+		// FOR NON-COLONIZED PLANETS
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 		io.putString("UNCOLONIZED", linesx, liney)
+		liney++
+		io.putString(fmt.Sprintf("MAX POP %d", star.GetPlanet().GetMaxPopulation()), linesx, liney)
 	}
 	liney++
 }

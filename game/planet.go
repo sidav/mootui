@@ -19,6 +19,10 @@ func (p *planet) GetPlanetTypeName() string {
 	return sTablePlanets[p.planetType].name
 }
 
+func (p *planet) GetMaxPopulation() int {
+	return p.maxPop
+}
+
 const (
 	PLANET_TYPE_NOT_HABITABLE = iota
 	PLANET_TYPE_RADIATED

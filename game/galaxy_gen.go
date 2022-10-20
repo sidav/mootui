@@ -81,12 +81,10 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 		X:          x,
 		Y:          y,
 		planet: &planet{
-			colonizedBy: nil,
 			planetType:  starsDataTable[starTypeIndex].selectPlanetTypeByRoll(planetTypeRoll),
-			pop:         0,
-			maxPop:      0,
 		},
 	}
+	star.planet.maxPop = rnd.RandInRange(1, 4) * sTablePlanets[star.planet.planetType].baseMaxPopulation
 	return &star
 }
 
