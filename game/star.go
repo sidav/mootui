@@ -4,11 +4,11 @@ type StarStruct struct {
 	Name       string
 	staticData *starStaticTable
 	X, Y       int
-	colony *colony
+	planet     *planet
 }
 
-func (s *StarStruct) GetColony() *colony {
-	return s.colony
+func (s *StarStruct) GetPlanet() *planet {
+	return s.planet
 }
 
 func (s *StarStruct) GetStarTypeName() string {

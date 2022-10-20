@@ -73,11 +73,19 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 	starTypeIndex := rnd.SelectRandomIndexFromWeighted(len(starsDataTable),
 		func(x int) int { return starsDataTable[x].frequencyForGeneration },
 	)
+
+	planetTypeRoll := rnd.Rand(20)
 	star := StarStruct{
 		staticData: starsDataTable[starTypeIndex],
 		Name:       selectedName,
 		X:          x,
 		Y:          y,
+		planet: &planet{
+			colonizedBy: nil,
+			planetType:  starsDataTable[starTypeIndex].selectPlanetTypeByRoll(planetTypeRoll),
+			pop:         0,
+			maxPop:      0,
+		},
 	}
 	return &star
 }
@@ -90,11 +98,11 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	for !selected {
 		selected = true
 		currStar = g.stars[currInd % len(g.stars)]
-		if currStar.colony != nil {
+		if currStar.planet.IsColonized() {
 			selected = false
 		}
 		for _, otherStar := range g.stars {
-			if otherStar.colony != nil {
+			if otherStar.planet.IsColonized() {
 				if sqDistInt(currStar.X, currStar.Y, otherStar.X, otherStar.Y) < minDist*minDist {
 					selected = false
 					break
@@ -103,8 +111,5 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 		}
 		currInd++
 	}
-	currStar.colony = &colony{
-		faction:    f,
-		population: 10, // TODO: review this
-	}
+	currStar.planet.colonizedBy = f
 }

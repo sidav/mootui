@@ -5,7 +5,7 @@ import "moocli/game"
 const (
 	GALAXY_CELL_W = 3
 	GALAXY_CELL_H = 2
-	SIDEBAR_W     = 14
+	SIDEBAR_W     = 17
 )
 
 type uiStruct struct {
@@ -43,5 +43,11 @@ func (ui *uiStruct) moveCursor(keyPressed string) {
 	}
 	if ui.cursorY < 0 {
 		ui.cursorY = 0
+	}
+	if ui.cursorX > ui.game.Galaxy.W-1 {
+		ui.cursorX = ui.game.Galaxy.W-1
+	}
+	if ui.cursorY > ui.game.Galaxy.H-1 {
+		ui.cursorY = ui.game.Galaxy.H-1
 	}
 }

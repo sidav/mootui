@@ -7,6 +7,7 @@ import (
 
 func colorStringToTcell(color string) tcell.Color {
 	switch strings.ToLower(color) {
+	case "white": return tcell.ColorWhite
 	case "yellow": return tcell.ColorYellow
 	case "red": return tcell.ColorRed
 	case "blue": return tcell.ColorBlue
