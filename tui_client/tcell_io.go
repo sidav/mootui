@@ -18,7 +18,7 @@ func (c *consoleIO) getConsoleSize() (int, int) {
 
 func (c *consoleIO) debugPrint(str string, args ...interface{}) {
 	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
-	c.putUncoloredString(fmt.Sprintf(str, args...), 0, 0)
+	c.putString(fmt.Sprintf(str, args...), 0, 0)
 	io.screen.Show()
 	time.Sleep(100 * time.Millisecond)
 }
@@ -76,7 +76,7 @@ func (c *consoleIO) putChar(chr rune, x, y int) {
 	c.screen.SetCell(x+c.offsetX, y+c.offsetY, c.style, chr)
 }
 
-func (c *consoleIO) putUncoloredString(str string, x, y int) {
+func (c *consoleIO) putString(str string, x, y int) {
 	for i := 0; i < len(str); i++ {
 		c.screen.SetCell(x+i+c.offsetX, y+c.offsetY, c.style, rune(str[i]))
 	}
@@ -110,5 +110,5 @@ func (c *consoleIO) drawRect(fx, fy, w, h int) {
 }
 
 func (c *consoleIO) drawStringCenteredAround(s string, x, y int) {
-	c.putUncoloredString(s, x-len(s)/2, y)
+	c.putString(s, x-len(s)/2, y)
 }

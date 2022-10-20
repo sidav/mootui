@@ -25,17 +25,14 @@ func (ui *uiStruct) DrawGalaxy(g *game.Game) {
 func (ui *uiStruct) drawCursor(g *game.Game) {
 	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
 	osx, osy := ui.realCoordsToScreenCoords(ui.cursorX, ui.cursorY)
-	cursorW := GALAXY_CELL_W
+	cursorW := GALAXY_CELL_W+1
 	star := g.Galaxy.GetStarAt(ui.cursorX, ui.cursorY)
 	if star != nil {
 		cursorW = len(star.Name)
-		osx -= (cursorW - GALAXY_CELL_W) / 2
-		if (cursorW-GALAXY_CELL_W)%2 == 0 {
-			cursorW++
-			osx--
-		} else {
-			osx -= 2
-		}
+		osx = osx - cursorW/2
+		cursorW++
+	} else {
+		osx--
 	}
 	io.putChar('┏', osx, osy-1)
 	io.putChar('┓', osx+cursorW, osy-1)
@@ -47,24 +44,27 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 	cw, ch := io.getConsoleSize()
 	io.drawFilledRect(' ', cw-SIDEBAR_W, 0, SIDEBAR_W, ch-1)
 	io.setStyle(tcell.ColorBlue, tcell.ColorBlue)
-	io.drawRect(cw-SIDEBAR_W, 0, SIDEBAR_W, ch-1)
+	io.drawRect(cw-SIDEBAR_W, -1, SIDEBAR_W, ch+1)
 
-	io.setStyle(tcell.ColorBlue, tcell.ColorBlack)
 	linesx := cw - SIDEBAR_W + 1
-	lineY := 1
+	liney := 1
 	star := ui.game.Galaxy.GetStarAt(ui.cursorX, ui.cursorY)
 	if star == nil {
-		io.putUncoloredString("Deep space", linesx, lineY)
+		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
+		io.putString("Deep space", linesx, liney)
 		return
 	}
-	io.putUncoloredString(star.Name, linesx, lineY)
-	lineY++
+	io.setStyle(colorStringToTcell(star.GetStarTypeName()), tcell.ColorBlack)
+	io.putString(star.Name, linesx, liney)
+	liney++
 	if star.GetColony() == nil {
-		io.putUncoloredString("UNCOLONIZED", linesx, lineY)
-		lineY++
+		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
+		io.putString("UNCOLONIZED", linesx, liney)
+		liney++
 	} else {
-		io.putUncoloredString("Colony", linesx, lineY)
-		lineY++
+		io.setStyle(colorStringToTcell(star.GetColony().GetFaction().GetColorName()), tcell.ColorBlack)
+		io.putString("Colony", linesx, liney)
+		liney++
 	}
 }
 
@@ -101,7 +101,7 @@ func (ui *uiStruct) drawStar(star *game.StarStruct) {
 	if star.GetColony() == nil {
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 	} else {
-		io.setStyle(tcell.ColorBlack, strColorToTcell(star.GetColony().GetFaction().GetColorName()))
+		io.setStyle(tcell.ColorBlack, colorStringToTcell(star.GetColony().GetFaction().GetColorName()))
 	}
 	io.drawStringCenteredAround(star.Name, onScreenX+1, onScreenY+1)
 }
