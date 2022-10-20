@@ -1,11 +1,26 @@
 package tui_client
 
-import "github.com/gdamore/tcell/v2"
+import (
+	"fmt"
+	"github.com/gdamore/tcell/v2"
+	"time"
+)
 
 type consoleIO struct {
 	offsetX, offsetY int
 	style            tcell.Style
 	screen           tcell.Screen
+}
+
+func (c *consoleIO) getConsoleSize() (int, int) {
+	return c.screen.Size()
+}
+
+func (c *consoleIO) debugPrint(str string, args ...interface{}) {
+	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
+	c.putUncoloredString(fmt.Sprintf(str, args...), 0, 0)
+	io.screen.Show()
+	time.Sleep(100 * time.Millisecond)
 }
 
 func (c *consoleIO) readKey() string {

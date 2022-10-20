@@ -5,8 +5,9 @@ import (
 )
 
 var (
-	currGame *game.Game
-	currUi   *uiStruct
+	currGame       *game.Game
+	currUi         *uiStruct
+	gameShouldExit bool
 )
 
 func StartGame() {
@@ -15,7 +16,11 @@ func StartGame() {
 	io.init()
 	defer io.close()
 
-	currUi.DrawGalaxy(currGame)
-
-	io.readKey()
+	for !gameShouldExit {
+		currUi.centerScreenAroundCursorCoords()
+		currUi.DrawGalaxy(currGame)
+		key := io.readKey()
+		gameShouldExit = key == "EXIT"
+		currUi.moveCursor(key)
+	}
 }
