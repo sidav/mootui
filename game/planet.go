@@ -1,12 +1,13 @@
 package game
 
 type planet struct {
-	colonizedBy *faction
-	planetType  int
-	factories   int
-	pop         int
-	maxPop      int
-	prodSliders [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
+	colonizedBy     *faction
+	planetType      int
+	factories       int
+	pop             int
+	maxPop          int
+	special, growth int
+	prodSliders     [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
 }
 
 func (p *planet) IsColonized() bool {

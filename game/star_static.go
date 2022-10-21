@@ -4,6 +4,7 @@ type starStaticTable struct {
 	starTypeName           string
 	frequencyForGeneration int      // opposite of rarity
 	planetTypesRoll        [][2]int // SHOULD BE ORDERED. first int - planet type, second is MAX INCLUSIVE roll in 0-20 (roll can be negative!)
+	planetSpecialsRoll     [][2]int // SHOULD BE ORDERED. first int - planet type, second is MAX INCLUSIVE roll in 0-20 (roll can be negative!)
 }
 
 func (sst *starStaticTable) selectPlanetTypeByRoll(roll int) int {

@@ -22,7 +22,9 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		io.putString(star.Name + " - " + star.GetStarTypeName() + " star", 0, line)
 		line++
 		io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
-		io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetPlanetTypeName()), 0, line)
+		//io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetPlanetTypeName()), 0, line)
+		//line++
+		io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetGrowthAndSpecialString()), 0, line)
 		line++
 		pop, maxPop := planet.GetPopulation()
 		io.putString(fmt.Sprintf("Pop. %d/%d billion", pop, maxPop), 0, line)

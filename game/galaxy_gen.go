@@ -84,7 +84,7 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 		X:          x,
 		Y:          y,
 		planet: &planet{
-			planetType:  starsDataTable[starTypeIndex].selectPlanetTypeByRoll(planetTypeRoll),
+			planetType: starsDataTable[starTypeIndex].selectPlanetTypeByRoll(planetTypeRoll),
 		},
 	}
 	star.planet.maxPop = rnd.RandInRange(1, 4) * sTablePlanets[star.planet.planetType].baseMaxPopulation
@@ -93,12 +93,12 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 
 func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	minDist := 1 * g.H / 2
-	currInd :=  rnd.Rand(len(g.stars))
-	currStar := g.stars[currInd % len(g.stars)]
+	currInd := rnd.Rand(len(g.stars))
+	currStar := g.stars[currInd%len(g.stars)]
 	selected := false
 	for !selected {
 		selected = true
-		currStar = g.stars[currInd % len(g.stars)]
+		currStar = g.stars[currInd%len(g.stars)]
 		if currStar.planet.IsColonized() {
 			selected = false
 		}
@@ -114,6 +114,8 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	}
 	currStar.planet.colonizedBy = f
 	currStar.planet.planetType = PLANET_TYPE_TERRAN
+	currStar.planet.growth = PGROWTH_NORMAL
+	currStar.planet.special = PSPECIAL_NORMAL
 	currStar.planet.maxPop = 80
 	currStar.planet.pop = 10
 	currStar.planet.EqualizeSliders(true)

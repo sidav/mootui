@@ -90,6 +90,8 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 	io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
 	io.putString(star.GetPlanet().GetPlanetTypeName(), linesx, liney)
 	liney++
+	io.putString(star.GetPlanet().GetGrowthAndSpecialString(), linesx, liney)
+	liney++
 	if star.GetPlanet().IsColonized() {
 		// FOR COLONIZED PLANETS
 		io.setStyle(colorStringToTcell(star.GetPlanet().GetFaction().GetColorName()), tcell.ColorBlack)
