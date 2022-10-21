@@ -9,7 +9,7 @@ import (
 	"moocli/game"
 )
 
-func (ui *uiStruct) DrawGalaxy(g *game.Game) {
+func (ui *uiStruct) DrawGalaxyScreen(g *game.Game) {
 	ui.game = g
 	io.screen.Clear()
 	stars := g.Galaxy.GetAllStars()
@@ -17,7 +17,7 @@ func (ui *uiStruct) DrawGalaxy(g *game.Game) {
 		// fmt.Printf("STAR %d: %s at %d, %d\n", i, star.Name, star.X, star.Y)
 		ui.drawStar(star)
 	}
-	ui.drawCursor(g)
+	ui.drawCursor()
 	ui.drawSidebarForCursorContents()
 	io.screen.Show()
 }

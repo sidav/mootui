@@ -3,14 +3,42 @@ package tui_client
 import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
-	"moocli/game"
+	"math"
 )
 
-func (ui *uiStruct) drawCursor(g *game.Game) {
+func (ui *uiStruct) renderSlider(x, y, w int, textOnLeft string, value, maxValue int, textOnSlider, textOnRight string) {
+	sliderLeft := fmt.Sprintf("%8s <", textOnLeft)
+	sliderRight := fmt.Sprintf("> %8s", textOnRight)
+	sliderW := w - len(sliderLeft) - len(sliderRight)
+	if sliderW <= 0 {
+		panic("UI failure")
+	}
+	io.putString(sliderLeft, x, y)
+	io.putString(sliderRight, x+len(sliderLeft)+sliderW, y)
+
+	filledCells := int(math.Round(float64(value*sliderW) / float64(maxValue)))
+	sliderBeginning := x+len(sliderLeft)
+	tosCell := (sliderW - len(textOnSlider))/2
+	for i := 0; i < sliderW; i++ {
+		if i < filledCells {
+			io.setStyle(tcell.ColorBlack, tcell.ColorDarkGreen)
+		} else {
+			io.setStyle(tcell.ColorBlack, tcell.ColorGray)
+		}
+		currTextOnSliderIndex := i-tosCell
+		if currTextOnSliderIndex >= 0 && currTextOnSliderIndex < len(textOnSlider) {
+			io.putChar(rune(textOnSlider[currTextOnSliderIndex]), i+sliderBeginning, y)
+		} else {
+			io.putChar(' ', i+sliderBeginning, y)
+		}
+	}
+}
+
+func (ui *uiStruct) drawCursor() {
 	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
 	osx, osy := ui.realCoordsToScreenCoords(ui.cursorX, ui.cursorY)
-	cursorW := GALAXY_CELL_W+1
-	star := g.Galaxy.GetStarAt(ui.cursorX, ui.cursorY)
+	cursorW := GALAXY_CELL_W + 1
+	star := ui.getStarAtCursor()
 	if star != nil {
 		cursorW = len(star.Name)
 		osx = osx - cursorW/2
@@ -32,7 +60,7 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 
 	linesx := cw - SIDEBAR_W + 1
 	liney := 1
-	star := ui.game.Galaxy.GetStarAt(ui.cursorX, ui.cursorY)
+	star := ui.getStarAtCursor()
 	if star == nil {
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 		io.putString("Deep space", linesx, liney)
@@ -41,7 +69,7 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 	io.setStyle(colorStringToTcell(star.GetStarTypeName()), tcell.ColorBlack)
 	io.putString(star.Name, linesx, liney)
 	liney++
-	io.putString(star.GetStarTypeName() + " star", linesx, liney)
+	io.putString(star.GetStarTypeName()+" star", linesx, liney)
 	liney++
 	io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
 	io.putString(star.GetPlanet().GetPlanetTypeName(), linesx, liney)
@@ -55,7 +83,8 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 		io.putString("UNCOLONIZED", linesx, liney)
 		liney++
-		io.putString(fmt.Sprintf("MAX POP %d", star.GetPlanet().GetMaxPopulation()), linesx, liney)
+		_, mp := star.GetPlanet().GetPopulation()
+		io.putString(fmt.Sprintf("MAX POP %d", mp), linesx, liney)
 	}
 	liney++
 }

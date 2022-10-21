@@ -5,6 +5,7 @@ type planet struct {
 	planetType  int
 	pop         int
 	maxPop      int
+	prodSliders [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
 }
 
 func (p *planet) IsColonized() bool {
@@ -19,8 +20,8 @@ func (p *planet) GetPlanetTypeName() string {
 	return sTablePlanets[p.planetType].name
 }
 
-func (p *planet) GetMaxPopulation() int {
-	return p.maxPop
+func (p *planet) GetPopulation() (int, int) {
+	return p.pop, p.maxPop
 }
 
 const (
@@ -47,7 +48,7 @@ type planetStatic struct {
 	baseMaxPopulation int
 }
 
-var sTablePlanets = map[int]*planetStatic {
+var sTablePlanets = map[int]*planetStatic{
 	PLANET_TYPE_NOT_HABITABLE: {
 		name:              "Not habitable",
 		baseMaxPopulation: 10,

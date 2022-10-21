@@ -18,9 +18,9 @@ func StartGame() {
 
 	for !gameShouldExit {
 		currUi.centerScreenAroundCursorCoords()
-		currUi.DrawGalaxy(currGame)
+		currUi.DrawGalaxyScreen(currGame)
 		key := io.readKey()
 		gameShouldExit = key == "EXIT"
-		currUi.moveCursor(key)
+		currUi.handleControls(key)
 	}
 }
