@@ -110,4 +110,5 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 		currInd++
 	}
 	currStar.planet.colonizedBy = f
+	currStar.planet.pop = 10
 }

@@ -21,6 +21,10 @@ func (p *planet) EqualizeSliders() {
 	}
 }
 
+func (p *planet) GetSliderLock(ind int) bool {
+	return p.prodSliders[ind].locked
+}
+
 func (p *planet) FlipSliderLock(ind int) {
 	p.prodSliders[ind].locked = !p.prodSliders[ind].locked
 }
