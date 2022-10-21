@@ -3,6 +3,7 @@ package game
 type planet struct {
 	colonizedBy *faction
 	planetType  int
+	factories   int
 	pop         int
 	maxPop      int
 	prodSliders [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
@@ -14,6 +15,10 @@ func (p *planet) IsColonized() bool {
 
 func (p *planet) GetFaction() *faction {
 	return p.colonizedBy
+}
+
+func (p *planet) GetFactories() int {
+	return p.factories
 }
 
 func (p *planet) GetPlanetTypeName() string {

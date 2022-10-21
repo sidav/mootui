@@ -72,7 +72,10 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 	io.drawRect(cw-SIDEBAR_W, -1, SIDEBAR_W, ch+1)
 
 	linesx := cw - SIDEBAR_W + 1
-	liney := 1
+	liney := 0
+	io.resetStyle()
+	io.putString(fmt.Sprintf("Turn %d", ui.game.Turn), linesx, liney)
+	liney++
 	star := ui.getStarAtCursor()
 	if star == nil {
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
@@ -91,6 +94,15 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 		// FOR COLONIZED PLANETS
 		io.setStyle(colorStringToTcell(star.GetPlanet().GetFaction().GetColorName()), tcell.ColorBlack)
 		io.putString("Colony", linesx, liney)
+		io.resetStyle()
+		pop, maxPop := star.GetPlanet().GetPopulation()
+		io.putString(fmt.Sprintf("Pop. %d/%d", pop, maxPop), linesx, liney)
+		liney++
+		io.putString(fmt.Sprintf("Fcts. %d/%d", star.GetPlanet().GetFactories(), ui.game.GetMaxFactoriesForPlanet(star.GetPlanet())), linesx, liney)
+		liney++
+		net, gross := ui.game.GetPlanetProductionNetGross(star.GetPlanet())
+		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), linesx, liney)
+		liney++
 	} else {
 		// FOR NON-COLONIZED PLANETS
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)

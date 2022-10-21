@@ -1,6 +1,9 @@
 package game
 
-import "fmt"
+import (
+	"fmt"
+	"moocli/math"
+)
 
 func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
 	fmt.Println("Generating galaxy...")
@@ -42,13 +45,13 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 		y = rnd.RandInRange(1, g.H-1)
 		if len(g.stars) > 0 {
 			lastStar := g.stars[len(g.stars)-1]
-			if sqDistInt(x, y, lastStar.X, lastStar.Y) < minDistFromPrevStar*minDistFromPrevStar {
+			if math.SqDistInt(x, y, lastStar.X, lastStar.Y) < minDistFromPrevStar*minDistFromPrevStar {
 				coordsSet = false
 				continue
 			}
 		}
 		for _, otherStar := range g.stars {
-			if sqDistInt(x, y, otherStar.X, otherStar.Y) < minDistFromAnotherStar*minDistFromAnotherStar {
+			if math.SqDistInt(x, y, otherStar.X, otherStar.Y) < minDistFromAnotherStar*minDistFromAnotherStar {
 				coordsSet = false
 				continue
 			}
@@ -101,7 +104,7 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 		}
 		for _, otherStar := range g.stars {
 			if otherStar.planet.IsColonized() {
-				if sqDistInt(currStar.X, currStar.Y, otherStar.X, otherStar.Y) < minDist*minDist {
+				if math.SqDistInt(currStar.X, currStar.Y, otherStar.X, otherStar.Y) < minDist*minDist {
 					selected = false
 					break
 				}

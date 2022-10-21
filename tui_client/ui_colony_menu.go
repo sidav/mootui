@@ -27,6 +27,11 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		pop, maxPop := planet.GetPopulation()
 		io.putString(fmt.Sprintf("Pop. %d/%d billion", pop, maxPop), 0, line)
 		line++
+		io.putString(fmt.Sprintf("Fcts. %d/%d", star.GetPlanet().GetFactories(), ui.game.GetMaxFactoriesForPlanet(star.GetPlanet())), 0, line)
+		line++
+		net, gross := ui.game.GetPlanetProductionNetGross(star.GetPlanet())
+		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), 0, line)
+		line++
 
 		line++
 		// slider control menu
