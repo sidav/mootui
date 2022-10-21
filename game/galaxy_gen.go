@@ -88,6 +88,41 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 		},
 	}
 	star.planet.maxPop = rnd.RandInRange(1, 4) * sTablePlanets[star.planet.planetType].baseMaxPopulation
+
+	// set growth
+	star.planet.growth = PGROWTH_NORMAL
+	if star.planet.planetType < PLANET_TYPE_MINIMAL {
+		star.planet.growth = PGROWTH_HOSTILE
+	}
+	if star.planet.planetType > PLANET_TYPE_DESERT && rnd.Rand(12) == 0 {
+		star.planet.growth = PGROWTH_FERTILE
+		star.planet.maxPop += 25 * star.planet.maxPop / 100
+	}
+
+	// set planet special
+	star.planet.special = PSPECIAL_NORMAL
+	spRoll := rnd.Rand(20) + star.staticData.poornessRollModifier
+	if spRoll <= 2 {
+		star.planet.special = PSPECIAL_POOR
+		if rnd.Rand(20) + star.staticData.poornessRollModifier <= 2 {
+			star.planet.special = PSPECIAL_ULTRA_POOR
+		}
+	}
+	spRoll = rnd.Rand(20) + star.staticData.richnessRollModifier
+	if PLANET_TYPE_STEPPE - star.planet.planetType > spRoll {
+		star.planet.special = PSPECIAL_RICH
+		if rnd.Rand(20) + star.staticData.richnessRollModifier <= 6 {
+			star.planet.special = PSPECIAL_ULTRA_RICH
+		}
+	}
+	if star.planet.special == PSPECIAL_NORMAL && star.planet.planetType >= PLANET_TYPE_MINIMAL &&
+		star.planet.planetType <= PLANET_TYPE_OCEAN {
+
+		if rnd.Rand(20) < 2 {
+			star.planet.special = PSPECIAL_ARTIFACTS
+		}
+	}
+
 	return &star
 }
 
