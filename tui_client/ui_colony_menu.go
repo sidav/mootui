@@ -70,7 +70,7 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		case "RIGHT":
 			planet.ChangeSliderPercent(+1, cursorPos)
 		case "e":
-			planet.EqualizeSliders()
+			planet.EqualizeSliders(false)
 		case " ":
 			planet.FlipSliderLock(cursorPos)
 		}

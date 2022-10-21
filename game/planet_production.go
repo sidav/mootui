@@ -14,11 +14,34 @@ type prodSliderStruct struct {
 	locked  bool
 }
 
-func (p *planet) EqualizeSliders() {
-	perSlider := 100 / TOTAL_PLANET_SLIDERS
+func (p *planet) getLockedSlidersCount() int {
+	l := 0
 	for i := range p.prodSliders {
-		p.prodSliders[i].percent = perSlider
+		if p.prodSliders[i].locked {
+			l++
+		}
 	}
+	return l
+}
+
+func (p *planet) EqualizeSliders(changeLocked bool) {
+	locks := 0
+	if !changeLocked {
+		locks = p.getLockedSlidersCount()
+	}
+	if locks == TOTAL_PLANET_SLIDERS {
+		return
+	}
+	perSlider := 100 / (TOTAL_PLANET_SLIDERS - locks)
+	if !changeLocked {
+		perSlider = p.getSlidersSumByLock(false) / (TOTAL_PLANET_SLIDERS - locks)
+	}
+	for i := range p.prodSliders {
+		if !p.prodSliders[i].locked || changeLocked {
+			p.prodSliders[i].percent = perSlider
+		}
+	}
+	p.NormalizeSliders(-1)
 }
 
 func (p *planet) GetSliderLock(ind int) bool {
@@ -33,6 +56,16 @@ func (p *planet) getSlidersSum() int {
 	sum := 0
 	for i := range p.prodSliders {
 		sum += p.prodSliders[i].percent
+	}
+	return sum
+}
+
+func (p *planet) getSlidersSumByLock(locked bool) int {
+	sum := 0
+	for i := range p.prodSliders {
+		if p.prodSliders[i].locked == locked {
+			sum += p.prodSliders[i].percent
+		}
 	}
 	return sum
 }
