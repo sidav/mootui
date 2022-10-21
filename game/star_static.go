@@ -145,6 +145,7 @@ var starsDataTable = [...]*starStaticTable{
 }
 
 var starNamesList = [...]string{
+	// original MOO1 names
 	"Ajax", "Alcor", "Anraq", "Antares", "Aquilae", "Argus", "Arietis", "Artemis", "Aurora", "Berel", "Beta Ceti",
 	"Bootis", "Capella", "Celtsi", "Centauri", "Collassa", "Crius", "Crypto", "Cygni", "Darrian", "Denubius", "Dolz",
 	"Draconis", "Drakka", "Dunatis", "Endoria", "Escalon", "Esper", "Exis", "Firma", "Galos", "Gienah", "Gion", "Gorra",
@@ -155,4 +156,6 @@ var starNamesList = [...]string{
 	"Rigel", "Romulas", "Rotan", "Ryoun", "Seidon", "Selia", "Simius", "Spica", "Stalaz", "Talas", "Tao", "Tau Cygni",
 	"Tauri", "Thrax", "Toranor", "Trax", "Tyr", "Ukko", "Uxmai", "Vega", "Volantis", "Vox", "Vulcan", "Whynil", "Willow",
 	"Xendalla", "Xengara", "Xudax", "Yarrow", "Zhardan", "Zoctan",
+	// my names
+	"Tau Ceti", "Canis", "Cepheus", "Perseus", "Auriga",
 }

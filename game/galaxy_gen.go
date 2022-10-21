@@ -110,5 +110,7 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 		currInd++
 	}
 	currStar.planet.colonizedBy = f
+	currStar.planet.planetType = PLANET_TYPE_TERRAN
+	currStar.planet.maxPop = 80
 	currStar.planet.pop = 10
 }
