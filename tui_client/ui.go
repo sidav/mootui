@@ -24,11 +24,3 @@ func (ui *uiStruct) centerScreenAroundCursorCoords() {
 func (ui *uiStruct) realCoordsToScreenCoords(rx, ry int) (int, int) {
 	return GALAXY_CELL_W * (rx - ui.camtlX), GALAXY_CELL_H * (ry - ui.camtlY)
 }
-
-func (ui *uiStruct) handleControls(keyPressed string) {
-	ui.moveCursor(keyPressed)
-	star := ui.getStarAtCursor()
-	if keyPressed == "ENTER" && star != nil && star.GetPlanet().IsColonized() {
-		ui.colonyMenu(star)
-	}
-}

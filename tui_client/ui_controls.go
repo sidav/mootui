@@ -1,5 +1,16 @@
 package tui_client
 
+func (ui *uiStruct) handleControls(keyPressed string) {
+	ui.moveCursor(keyPressed)
+	star := ui.getStarAtCursor()
+	if keyPressed == "ENTER" && star != nil && star.GetPlanet().IsColonized() {
+		ui.colonyMenu(star)
+	}
+	if keyPressed == "n" {
+		ui.game.ProcessTurn()
+	}
+}
+
 func (ui *uiStruct) moveCursor(keyPressed string) {
 	switch keyPressed {
 	case "UP":

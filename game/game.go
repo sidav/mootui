@@ -16,7 +16,7 @@ func InitNewGame() *Game {
 	rnd.InitDefault()
 	gam := Game{}
 	gam.Turn = 1
-	gam.Galaxy = generateGalaxy(26, 12, 20)
+	gam.Galaxy = generateGalaxy(32, 20, 36)
 	fmt.Println("Game init finished.")
 	return &gam
 }

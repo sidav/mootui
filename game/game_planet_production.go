@@ -14,3 +14,11 @@ func (g *Game) GetPlanetProductionNetGross(p *planet) (int, int) {
 	net := gross // TODO: taxes
 	return net, gross
 }
+
+func (g *Game) GetPlanetProductionPerSlider(p *planet) (bcPerSlider [TOTAL_PLANET_SLIDERS]int) {
+	netProduction, _ := g.GetPlanetProductionNetGross(p)
+	for i := range p.prodSliders {
+		bcPerSlider[i] = p.prodSliders[i].percent * netProduction / 100
+	}
+	return
+}
