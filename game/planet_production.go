@@ -82,7 +82,11 @@ func (p *planet) NormalizeSliders(excludedIndex int) {
 				selectedSlider = i
 			}
 		}
-		p.prodSliders[selectedSlider].percent++
+		if selectedSlider == -1 {
+			p.prodSliders[excludedIndex].percent++
+		} else {
+			p.prodSliders[selectedSlider].percent++
+		}
 	}
 	for p.getSlidersSum() > 100 {
 		// decreasing the highest non-locked slider
@@ -95,7 +99,11 @@ func (p *planet) NormalizeSliders(excludedIndex int) {
 				selectedSlider = i
 			}
 		}
-		p.prodSliders[selectedSlider].percent--
+		if selectedSlider == -1 {
+			p.prodSliders[excludedIndex].percent--
+		} else {
+			p.prodSliders[selectedSlider].percent--
+		}
 	}
 }
 
@@ -104,6 +112,9 @@ func (p *planet) GetSliderPercent(num int) int {
 }
 
 func (p *planet) ChangeSliderPercent(diff int, sliderNum int) {
+	if diff > 0 && p.getSlidersSumByLock(false) - p.prodSliders[sliderNum].percent <= 0 {
+		return
+	}
 	p.prodSliders[sliderNum].percent += diff
 	if p.prodSliders[sliderNum].percent < 0 {
 		p.prodSliders[sliderNum].percent = 0
