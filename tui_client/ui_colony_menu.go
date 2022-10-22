@@ -26,12 +26,12 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		//line++
 		io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetGrowthAndSpecialString()), 0, line)
 		line++
-		pop, maxPop := planet.GetPopulation()
-		io.putString(fmt.Sprintf("Pop. %d/%d billion", pop, maxPop), 0, line)
+		pop, maxPop := planet.GetPopulationStrings()
+		io.putString(fmt.Sprintf("Pop. %s/%s bln.", pop, maxPop), 0, line)
 		line++
 		io.putString(fmt.Sprintf("Fcts. %d/%d Waste +%d/-%d", planet.GetFactories(),
 			ui.game.GetMaxFactoriesForPlanet(planet),
-			ui.game.GetPlanetWaste(planet), ui.game.GetPlanetWasteRemoval(planet, false)),
+			ui.game.GetPlanetWaste(planet), ui.game.GetPlanetWasteRemoval(planet, true)),
 			0, line)
 		line++
 		net, gross := ui.game.GetPlanetProductionNetGross(star.GetPlanet())
@@ -41,6 +41,7 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		line++
 		// slider control menu
 		// scmStart := line
+		bcPerSlider := ui.game.GetPlanetBCPerSlider(planet)
 		for i := 0; i < game.TOTAL_PLANET_SLIDERS; i++ {
 			sliderTextColor := tcell.ColorWhite
 			sliderFillColor := tcell.ColorDarkGreen
@@ -56,7 +57,7 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 			ui.renderSlider(0, line, cw,
 				game.GetSliderName(i),
 				planet.GetSliderPercent(i), 100,
-				fmt.Sprintf("%d%%", planet.GetSliderPercent(i)), sliderFillColor, tcell.ColorGray,
+				fmt.Sprintf("%d%% (%dBC)", planet.GetSliderPercent(i), bcPerSlider[i]), sliderFillColor, tcell.ColorGray,
 				"not implemented")
 			line++
 		}

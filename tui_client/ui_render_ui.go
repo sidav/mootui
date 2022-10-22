@@ -97,8 +97,8 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 		io.setStyle(colorStringToTcell(star.GetPlanet().GetFaction().GetColorName()), tcell.ColorBlack)
 		io.putString("Colony", linesx, liney)
 		io.resetStyle()
-		pop, maxPop := star.GetPlanet().GetPopulation()
-		io.putString(fmt.Sprintf("Pop. %d/%d", pop, maxPop), linesx, liney)
+		pop, maxPop := star.GetPlanet().GetPopulationStrings()
+		io.putString(fmt.Sprintf("Pop. %s/%s", pop, maxPop), linesx, liney)
 		liney++
 		io.putString(fmt.Sprintf("Fcts. %d/%d", star.GetPlanet().GetFactories(), ui.game.GetMaxFactoriesForPlanet(star.GetPlanet())), linesx, liney)
 		liney++
@@ -110,8 +110,8 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 		io.putString("UNCOLONIZED", linesx, liney)
 		liney++
-		_, mp := star.GetPlanet().GetPopulation()
-		io.putString(fmt.Sprintf("MAX POP %d", mp), linesx, liney)
+		_, mp := star.GetPlanet().GetPopulationStrings()
+		io.putString(fmt.Sprintf("MAX POP %s", mp), linesx, liney)
 	}
 	liney++
 }

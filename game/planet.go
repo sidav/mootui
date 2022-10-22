@@ -1,11 +1,14 @@
 package game
 
+import "strconv"
+
 type planet struct {
 	colonizedBy           *faction
 	planetType            int
 	factories             int
 	bcRemainingForFactory int // remaining from previous turn, "unbuilt" factory
 	pop                   int
+	popTenths             int // it's "3" in "4.3 pop"
 	maxPop                int
 	special, growth       int
 	prodSliders           [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
@@ -27,8 +30,8 @@ func (p *planet) GetPlanetTypeName() string {
 	return sTablePlanets[p.planetType].name
 }
 
-func (p *planet) GetPopulation() (int, int) {
-	return p.pop, p.maxPop
+func (p *planet) GetPopulationStrings() (string, string) {
+	return strconv.Itoa(p.pop) + "." + strconv.Itoa(p.popTenths), strconv.Itoa(p.maxPop)
 }
 
 const (

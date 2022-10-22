@@ -24,7 +24,7 @@ func (g *Game) buildFactories(p *planet, spentBcs int) {
 	spentBcs += p.bcRemainingForFactory
 	p.bcRemainingForFactory = 0
 	factoryCost := 10 // TODO: consider tech
-	builtFactories := math.MinInt(spentBcs/factoryCost, maxFactories - p.factories)
+	builtFactories := math.MinInt(spentBcs/factoryCost, maxFactories-p.factories)
 	p.bcRemainingForFactory = spentBcs % factoryCost
 	p.factories += builtFactories
 	// TODO: partial factories building
@@ -40,10 +40,20 @@ func (g *Game) growColonizedPlanetPop(p *planet) {
 	case PGROWTH_GAIA:
 		grPerc *= 2
 	}
-	naturalGrowth := grPerc * (p.pop + 5) / 1000
+	naturalGrowth := grPerc*(p.pop+5)/100 + p.popTenths
 	if naturalGrowth == 0 && grPerc > 0 {
 		naturalGrowth = 1
 	}
-	p.pop += naturalGrowth
+	p.pop += naturalGrowth / 10
+	if p.pop < p.maxPop {
+		p.popTenths += naturalGrowth % 10
+		if p.popTenths >= 10 {
+			p.pop++
+			p.popTenths -= 10
+		}
+	}
+	if p.pop >= p.maxPop {
+		p.popTenths = 0
+	}
 	// TODO: partial growth
 }
