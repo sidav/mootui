@@ -19,7 +19,7 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 
 		line := 0
 		io.setStyle(colorStringToTcell(star.GetStarTypeName()), tcell.ColorBlack)
-		io.putString(star.Name + " - " + star.GetStarTypeName() + " star", 0, line)
+		io.putString(star.Name+" - "+star.GetStarTypeName()+" star", 0, line)
 		line++
 		io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
 		//io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetPlanetTypeName()), 0, line)
@@ -41,7 +41,6 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		line++
 		// slider control menu
 		// scmStart := line
-		bcPerSlider := ui.game.GetPlanetBCPerSlider(planet)
 		for i := 0; i < game.TOTAL_PLANET_SLIDERS; i++ {
 			sliderTextColor := tcell.ColorWhite
 			sliderFillColor := tcell.ColorDarkGreen
@@ -57,8 +56,9 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 			ui.renderSlider(0, line, cw,
 				game.GetSliderName(i),
 				planet.GetSliderPercent(i), 100,
-				fmt.Sprintf("%d%% (%dBC)", planet.GetSliderPercent(i), bcPerSlider[i]), sliderFillColor, tcell.ColorGray,
-				"not implemented")
+				fmt.Sprintf("%d%% (%dBC)", planet.GetSliderPercent(i), ui.game.GetPlanetBCForSlider(planet, i)),
+				sliderFillColor, tcell.ColorGray,
+				ui.game.GetSliderString(planet, i))
 			line++
 		}
 		io.resetStyle()
@@ -87,4 +87,3 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		}
 	}
 }
-

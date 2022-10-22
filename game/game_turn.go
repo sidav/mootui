@@ -1,33 +1,24 @@
 package game
 
-import "moocli/math"
-
 func (g *Game) ProcessTurn() {
 	g.Turn++
 	for _, star := range g.Galaxy.stars {
 		if star.GetPlanet().IsColonized() {
-			planetBC := g.GetPlanetBCPerSlider(star.GetPlanet())
+			indBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_IND)
+			// ecoBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_ECO)
 
-			g.buildFactories(star.planet, planetBC[PSLIDER_IND])
 			g.growColonizedPlanetPop(star.planet)
+			g.buildFactories(star.planet, indBC)
 
 			g.adjustEcoSliderToEliminatePollution(star.GetPlanet())
 		}
 	}
 }
 
-func (g *Game) buildFactories(p *planet, spentBcs int) {
-	maxFactories := g.GetMaxFactoriesForPlanet(p)
-	if p.factories >= maxFactories {
-		return
-	}
-	spentBcs += p.bcRemainingForFactory
-	p.bcRemainingForFactory = 0
-	factoryCost := 10 // TODO: consider tech
-	builtFactories := math.MinInt(spentBcs/factoryCost, maxFactories-p.factories)
-	p.bcRemainingForFactory = spentBcs % factoryCost
-	p.factories += builtFactories
-	// TODO: partial factories building
+func (g *Game) buildFactories(p *planet, spentBc int) {
+	fct, rem := g.GetPlanetFactoriesConstructedAndRemainderBC(p, spentBc)
+	p.factories += fct
+	p.bcRemainingForFactory = rem
 }
 
 func (g *Game) growColonizedPlanetPop(p *planet) {

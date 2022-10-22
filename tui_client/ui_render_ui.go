@@ -16,7 +16,7 @@ func (ui *uiStruct) renderSlider(x, y, w int, textOnLeft string,
 	} else {
 		fullTextOnLeft += " "
 	}
-	fullTextOnRight := fmt.Sprintf(" %8s", textOnRight)
+	fullTextOnRight := fmt.Sprintf(" %15s", textOnRight)
 	if value < maxValue {
 		fullTextOnRight = ">" + fullTextOnRight
 	} else {
