@@ -19,9 +19,7 @@ func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
 
 	fmt.Println("   Adding factions...")
 	for i := 0; i < 4; i++ {
-		gs.factions = append(gs.factions, &faction{
-			colorName: FactionColors[i],
-		})
+		gs.factions = append(gs.factions, createFaction(FactionColors[i]))
 	}
 
 	fmt.Println("   Placing homeworlds...")
