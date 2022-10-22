@@ -29,7 +29,10 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		pop, maxPop := planet.GetPopulation()
 		io.putString(fmt.Sprintf("Pop. %d/%d billion", pop, maxPop), 0, line)
 		line++
-		io.putString(fmt.Sprintf("Fcts. %d/%d", star.GetPlanet().GetFactories(), ui.game.GetMaxFactoriesForPlanet(star.GetPlanet())), 0, line)
+		io.putString(fmt.Sprintf("Fcts. %d/%d Waste +%d/-%d", planet.GetFactories(),
+			ui.game.GetMaxFactoriesForPlanet(planet),
+			ui.game.GetPlanetWaste(planet), ui.game.GetPlanetWasteRemoval(planet, false)),
+			0, line)
 		line++
 		net, gross := ui.game.GetPlanetProductionNetGross(star.GetPlanet())
 		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), 0, line)

@@ -11,8 +11,14 @@ var (
 )
 
 func StartGame() {
-	currUi = &uiStruct{}
 	currGame = game.InitNewGame()
+	currUi = &uiStruct{}
+	for _, star := range currGame.Galaxy.GetAllStars() {
+		if star.GetPlanet().IsColonized() {
+			currUi.cursorX, currUi.cursorY = star.X, star.Y
+			break
+		}
+	}
 	io.init()
 	defer io.close()
 

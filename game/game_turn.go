@@ -6,22 +6,32 @@ func (g *Game) ProcessTurn() {
 	g.Turn++
 	for _, star := range g.Galaxy.stars {
 		if star.GetPlanet().IsColonized() {
-			planetBC := g.GetPlanetProductionPerSlider(star.GetPlanet())
+			planetBC := g.GetPlanetBCPerSlider(star.GetPlanet())
 
 			g.buildFactories(star.planet, planetBC[PSLIDER_IND])
 			g.growColonizedPlanetPop(star.planet)
+
+			g.adjustEcoSliderToEliminatePollution(star.GetPlanet())
 		}
 	}
 }
 
 func (g *Game) buildFactories(p *planet, spentBcs int) {
-	factoryCost := 10 // TODO: consider tech
 	maxFactories := g.GetMaxFactoriesForPlanet(p)
-	p.factories += math.MinInt(spentBcs/factoryCost, maxFactories - p.factories)
+	if p.factories >= maxFactories {
+		return
+	}
+	spentBcs += p.bcRemainingForFactory
+	p.bcRemainingForFactory = 0
+	factoryCost := 10 // TODO: consider tech
+	builtFactories := math.MinInt(spentBcs/factoryCost, maxFactories - p.factories)
+	p.bcRemainingForFactory = spentBcs % factoryCost
+	p.factories += builtFactories
+	// TODO: partial factories building
 }
 
 func (g *Game) growColonizedPlanetPop(p *planet) {
-	grPerc := 100 - (100 * p.pop / p.maxPop)
+	grPerc := 100 - (100 * (p.pop + (g.GetPlanetWaste(p) - g.GetPlanetWasteRemoval(p, false))) / p.maxPop)
 	switch p.growth {
 	case PGROWTH_HOSTILE:
 		grPerc /= 2
@@ -35,4 +45,5 @@ func (g *Game) growColonizedPlanetPop(p *planet) {
 		naturalGrowth = 1
 	}
 	p.pop += naturalGrowth
+	// TODO: partial growth
 }
