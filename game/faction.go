@@ -6,6 +6,9 @@ type faction struct {
 
 	hasTech         [TECH_CATEGORIES][TECH_IN_CATEGORY]bool
 	canResearchTech [TECH_CATEGORIES][TECH_IN_CATEGORY]bool
+
+	bcInTechCategories [TECH_CATEGORIES]int
+	bcInReserve        int
 }
 
 func createFaction(colorName string) *faction {
@@ -16,10 +19,6 @@ func createFaction(colorName string) *faction {
 
 func (f *faction) GetColorName() string {
 	return f.colorName
-}
-
-func (f *faction) getFactoryCost() int {
-	return 10
 }
 
 var FactionColors = [...]string{

@@ -14,7 +14,7 @@ type techStruct struct {
 }
 
 var techTable = [TECH_CATEGORIES][TECH_IN_CATEGORY]*techStruct{
-	// BIOLOGY
+	// COMPUTERS
 	{
 		{
 			Name:                "Basic waste removal",
