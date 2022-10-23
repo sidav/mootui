@@ -26,12 +26,14 @@ func (g *Game) AccumulateScienceForFaction(f *faction, rp int) {
 
 func (g *Game) PerformResearchForFaction(f *faction) {
 	for cat := range f.bcSpentInTechCategories {
-		if f.CurrentResearchingTech[cat] == -1 {
+		resId := f.CurrentResearchingTech[cat]
+		if resId == -1 {
 			continue
 		}
-		if f.bcSpentInTechCategories[cat] >= GetScienceCostForTech(cat, f.CurrentResearchingTech[cat]) {
+		if f.bcSpentInTechCategories[cat] >= GetScienceCostForTech(cat, resId) {
 			f.bcSpentInTechCategories[cat] = 0
-			f.hasTech[cat][f.CurrentResearchingTech[cat]] = true
+			f.hasTech[cat][resId] = true
+			f.applyNewTech(cat, resId)
 			f.CurrentResearchingTech[cat] = -1
 			// TODO: create faction notification about completed research
 		}
