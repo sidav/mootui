@@ -12,9 +12,10 @@ var (
 
 func StartGame() {
 	currGame = game.InitNewGame()
+	playerFaction := currGame.GetPlayerFaction()
 	currUi = &uiStruct{}
 	for _, star := range currGame.Galaxy.GetAllStars() {
-		if star.GetPlanet().IsColonized() {
+		if star.GetPlanet().GetFaction() == playerFaction {
 			currUi.cursorX, currUi.cursorY = star.X, star.Y
 			break
 		}
@@ -23,6 +24,12 @@ func StartGame() {
 	defer io.close()
 
 	for !gameShouldExit {
+		// show tech setup if needed
+		for cat := range playerFaction.CurrentResearchingTech {
+			if playerFaction.CurrentResearchingTech[cat] == -1 {
+//				currUi.showSelectResearchMenu(cat)
+			}
+		}
 		currUi.centerScreenAroundCursorCoords()
 		currUi.DrawGalaxyScreen(currGame)
 		key := io.readKey()

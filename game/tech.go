@@ -17,18 +17,42 @@ var techTable = [TECH_CATEGORIES][TECH_IN_CATEGORY]*techStruct{
 	// COMPUTERS
 	{
 		{
-			Name:                "Basic waste removal",
+			Name:                "Basic robotic controls",
 			wasteRemovalCost:    2,
 			wasteRemovedPerCost: 1,
 			alwaysAvailable:     true,
 		},
 		{
-			Name:                "Improved waste removal",
+			Name:                "Improved robotic controls",
 			wasteRemovalCost:    3,
 			wasteRemovedPerCost: 2,
 		},
 	},
-	//
+	// CONSTRUCTION
+	{
+		{
+			Name:                "Basic factories cost",
+			wasteRemovalCost:    2,
+			wasteRemovedPerCost: 1,
+			alwaysAvailable:     true,
+		},
+		{
+			Name:                "Improved factories cost",
+			wasteRemovalCost:    3,
+			wasteRemovedPerCost: 2,
+		},
+	},
+	// FORCE FIELDS
+	{
+		{
+			Name:                "Basic shields",
+			alwaysAvailable:     true,
+		},
+		{
+			Name:                "Improved shields",
+		},
+	},
+	// PLANETOLOGY
 	{
 		{
 			Name:                "Basic waste removal",
@@ -42,56 +66,24 @@ var techTable = [TECH_CATEGORIES][TECH_IN_CATEGORY]*techStruct{
 			wasteRemovedPerCost: 2,
 		},
 	},
+	// PROPULSION
 	{
 		{
-			Name:                "Basic waste removal",
-			wasteRemovalCost:    2,
-			wasteRemovedPerCost: 1,
+			Name:                "Basic engines",
 			alwaysAvailable:     true,
 		},
 		{
-			Name:                "Improved waste removal",
-			wasteRemovalCost:    3,
-			wasteRemovedPerCost: 2,
+			Name:                "Improved engines",
 		},
 	},
+	// WEAPONS
 	{
 		{
-			Name:                "Basic waste removal",
-			wasteRemovalCost:    2,
-			wasteRemovedPerCost: 1,
+			Name:                "Basic weapons",
 			alwaysAvailable:     true,
 		},
 		{
-			Name:                "Improved waste removal",
-			wasteRemovalCost:    3,
-			wasteRemovedPerCost: 2,
-		},
-	},
-	{
-		{
-			Name:                "Basic waste removal",
-			wasteRemovalCost:    2,
-			wasteRemovedPerCost: 1,
-			alwaysAvailable:     true,
-		},
-		{
-			Name:                "Improved waste removal",
-			wasteRemovalCost:    3,
-			wasteRemovedPerCost: 2,
-		},
-	},
-	{
-		{
-			Name:                "Basic waste removal",
-			wasteRemovalCost:    2,
-			wasteRemovedPerCost: 1,
-			alwaysAvailable:     true,
-		},
-		{
-			Name:                "Improved waste removal",
-			wasteRemovalCost:    3,
-			wasteRemovedPerCost: 2,
+			Name:                "Improved weapons",
 		},
 	},
 }

@@ -12,6 +12,15 @@ type Game struct {
 	Turn   int
 }
 
+func (g *Game) GetPlayerFaction() *faction {
+	for _, f := range g.Galaxy.factions {
+		if f.isPlayerControlled {
+			return f
+		}
+	}
+	return nil
+}
+
 func InitNewGame() *Game {
 	rnd.InitDefault()
 	gam := Game{}

@@ -18,6 +18,7 @@ func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
 	}
 
 	fmt.Println("   Adding factions...")
+	gs.factions = make([]*faction, 0)
 	for i := 0; i < 4; i++ {
 		gs.factions = append(gs.factions, createFaction(FactionColors[i]))
 	}
@@ -26,6 +27,7 @@ func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
 	for _, f := range gs.factions {
 		placeHomeworldForFaction(gs, f)
 	}
+	gs.factions[0].isPlayerControlled = true
 
 	return gs
 }

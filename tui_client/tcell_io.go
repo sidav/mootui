@@ -16,6 +16,13 @@ func (c *consoleIO) getConsoleSize() (int, int) {
 	return c.screen.Size()
 }
 
+func (c *consoleIO) clearScreen() {
+	io.screen.Clear()
+	cw, ch := c.getConsoleSize()
+	io.setStyle(tcell.ColorBlack, tcell.ColorBlack)
+	io.drawFilledRect(' ', 0, 0, cw, ch)
+}
+
 func (c *consoleIO) debugPrint(str string, args ...interface{}) {
 	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
 	c.putString(fmt.Sprintf(str, args...), 0, 0)

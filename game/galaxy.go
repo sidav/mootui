@@ -1,8 +1,8 @@
 package game
 
 type galaxyStruct struct {
-	W, H  int
-	stars []*StarStruct
+	W, H     int
+	stars    []*StarStruct
 	factions []*faction
 }
 

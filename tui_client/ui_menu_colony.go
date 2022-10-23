@@ -30,11 +30,11 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		io.putString(fmt.Sprintf("Pop. %s/%s bln.", pop, maxPop), 0, line)
 		line++
 		io.putString(fmt.Sprintf("Fcts. %d/%d Waste +%d/-%d", planet.GetFactories(),
-			ui.game.GetMaxFactoriesForPlanet(planet),
-			ui.game.GetPlanetWaste(planet), ui.game.GetPlanetWasteRemoval(planet, true)),
+			currGame.GetMaxFactoriesForPlanet(planet),
+			currGame.GetPlanetWaste(planet), currGame.GetPlanetWasteRemoval(planet, true)),
 			0, line)
 		line++
-		net, gross := ui.game.GetPlanetProductionNetGross(star.GetPlanet())
+		net, gross := currGame.GetPlanetProductionNetGross(star.GetPlanet())
 		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), 0, line)
 		line++
 
@@ -56,9 +56,9 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 			ui.renderSlider(0, line, cw,
 				game.GetSliderName(i),
 				planet.GetSliderPercent(i), 100,
-				fmt.Sprintf("%d%% (%dBC)", planet.GetSliderPercent(i), ui.game.GetPlanetBCForSlider(planet, i)),
+				fmt.Sprintf("%d%% (%dBC)", planet.GetSliderPercent(i), currGame.GetPlanetBCForSlider(planet, i)),
 				sliderFillColor, tcell.ColorGray,
-				ui.game.GetSliderString(planet, i))
+				currGame.GetSliderString(planet, i))
 			line++
 		}
 		io.resetStyle()

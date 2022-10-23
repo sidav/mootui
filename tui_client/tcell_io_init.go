@@ -19,9 +19,7 @@ func (io *consoleIO) init() {
 		fmt.Fprintf(os.Stderr, "%v\n", e)
 		os.Exit(1)
 	}
-	io.screen.Clear()
-	io.setStyle(tcell.ColorBlack, tcell.ColorBlack)
-	io.screen.Fill(' ', io.style)
+	io.clearScreen()
 }
 
 func (io *consoleIO) close() {

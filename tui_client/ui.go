@@ -1,7 +1,5 @@
 package tui_client
 
-import "moocli/game"
-
 const (
 	GALAXY_CELL_W = 3
 	GALAXY_CELL_H = 2
@@ -9,7 +7,6 @@ const (
 )
 
 type uiStruct struct {
-	game             *game.Game
 	cursorX, cursorY int // REAL coordinates
 	camtlX, camtlY   int // camera REAL top left coord
 }

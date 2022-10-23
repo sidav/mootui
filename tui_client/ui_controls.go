@@ -7,7 +7,7 @@ func (ui *uiStruct) handleControls(keyPressed string) {
 		ui.colonyMenu(star)
 	}
 	if keyPressed == "n" {
-		ui.game.ProcessTurn()
+		currGame.ProcessTurn()
 	}
 }
 
@@ -30,10 +30,10 @@ func (ui *uiStruct) moveCursor(keyPressed string) {
 	if ui.cursorY < 0 {
 		ui.cursorY = 0
 	}
-	if ui.cursorX > ui.game.Galaxy.W-1 {
-		ui.cursorX = ui.game.Galaxy.W - 1
+	if ui.cursorX > currGame.Galaxy.W-1 {
+		ui.cursorX = currGame.Galaxy.W - 1
 	}
-	if ui.cursorY > ui.game.Galaxy.H-1 {
-		ui.cursorY = ui.game.Galaxy.H - 1
+	if ui.cursorY > currGame.Galaxy.H-1 {
+		ui.cursorY = currGame.Galaxy.H - 1
 	}
 }

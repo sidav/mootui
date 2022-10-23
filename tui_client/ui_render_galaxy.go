@@ -10,7 +10,7 @@ import (
 )
 
 func (ui *uiStruct) DrawGalaxyScreen(g *game.Game) {
-	ui.game = g
+	currGame = g
 	io.screen.Clear()
 	stars := g.Galaxy.GetAllStars()
 	for _, star := range stars {

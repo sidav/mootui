@@ -74,7 +74,7 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 	linesx := cw - SIDEBAR_W + 1
 	liney := 0
 	io.resetStyle()
-	io.putString(fmt.Sprintf("Turn %d", ui.game.Turn), linesx, liney)
+	io.putString(fmt.Sprintf("Turn %d", currGame.Turn), linesx, liney)
 	liney++
 	star := ui.getStarAtCursor()
 	if star == nil {
@@ -100,9 +100,9 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 		pop, maxPop := star.GetPlanet().GetPopulationStrings()
 		io.putString(fmt.Sprintf("Pop. %s/%s", pop, maxPop), linesx, liney)
 		liney++
-		io.putString(fmt.Sprintf("Fcts. %d/%d", star.GetPlanet().GetFactories(), ui.game.GetMaxFactoriesForPlanet(star.GetPlanet())), linesx, liney)
+		io.putString(fmt.Sprintf("Fcts. %d/%d", star.GetPlanet().GetFactories(), currGame.GetMaxFactoriesForPlanet(star.GetPlanet())), linesx, liney)
 		liney++
-		net, gross := ui.game.GetPlanetProductionNetGross(star.GetPlanet())
+		net, gross := currGame.GetPlanetProductionNetGross(star.GetPlanet())
 		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), linesx, liney)
 		liney++
 	} else {
