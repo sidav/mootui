@@ -1,7 +1,13 @@
 package game
 
+import "moocli/math"
+
 const TECH_CATEGORIES = 6
 const TECH_IN_CATEGORY = 2
+
+func GetScienceCostForTech(cat, id int) int {
+	return 200 + math.PowInt(12, id+1)/math.PowInt(10, id+1)
+}
 
 type techStruct struct {
 	Name                    string

@@ -27,7 +27,7 @@ func StartGame() {
 		// show tech setup if needed
 		for cat := range playerFaction.CurrentResearchingTech {
 			if playerFaction.CurrentResearchingTech[cat] == -1 {
-//				currUi.showSelectResearchMenu(cat)
+				currUi.showSelectResearchMenu(cat)
 			}
 		}
 		currUi.centerScreenAroundCursorCoords()

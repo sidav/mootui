@@ -2,6 +2,9 @@ package game
 
 func (g *Game) ProcessTurn() {
 	g.Turn++
+	for _, f := range g.Galaxy.factions {
+		g.AccumulateScienceForFaction(f, g.GetFactionScienceTotalProduced(f))
+	}
 	for _, star := range g.Galaxy.stars {
 		if star.GetPlanet().IsColonized() {
 			indBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_IND)
@@ -12,6 +15,9 @@ func (g *Game) ProcessTurn() {
 
 			g.adjustEcoSliderToEliminatePollution(star.GetPlanet())
 		}
+	}
+	for _, f := range g.Galaxy.factions {
+		g.PerformResearchForFaction(f)
 	}
 }
 

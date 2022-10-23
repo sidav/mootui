@@ -27,7 +27,7 @@ func (c *consoleIO) debugPrint(str string, args ...interface{}) {
 	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
 	c.putString(fmt.Sprintf(str, args...), 0, 0)
 	io.screen.Show()
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 }
 
 func (c *consoleIO) readKey() string {

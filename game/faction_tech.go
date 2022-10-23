@@ -26,13 +26,15 @@ func (f *faction) GetGeneralTechLevel() int {
 	return totalLevel - (2*highestLevel/10)
 }
 
-func (f *faction) GetResearchableTechesInCategory(cat int) []*techStruct {
+func (f *faction) GetResearchableTechesInCategory(cat int) ([]*techStruct, []int) {
 	ret := make([]*techStruct, 0)
+	retIds := make([]int, 0)
 	ftl := f.GetGeneralTechLevel()
 	for i := 0; i <= ftl; i++ {
 		if f.canResearchTech[cat][i] && !f.hasTech[cat][i] {
 			ret = append(ret, techTable[cat][i])
+			retIds = append(retIds, i)
 		}
 	}
-	return ret
+	return ret, retIds
 }

@@ -1,11 +1,15 @@
 package tui_client
 
-import "github.com/gdamore/tcell/v2"
+import (
+	"fmt"
+	"github.com/gdamore/tcell/v2"
+	"moocli/game"
+)
 
 func (ui *uiStruct) showSelectResearchMenu(category int) {
 	cw, _ := io.getConsoleSize()
 	pFact := currGame.GetPlayerFaction()
-	teches := pFact.GetResearchableTechesInCategory(category)
+	teches, ids := pFact.GetResearchableTechesInCategory(category)
 	if len(teches) == 0 {
 		return
 	}
@@ -16,6 +20,7 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 		io.clearScreen()
 		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 		io.drawStringCenteredAround("SELECT NEW RESEARCH", cw/2, line)
+		// todo: write category
 		line++
 		line++
 		for i := range teches {
@@ -24,7 +29,7 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 			} else {
 				io.setStyle(tcell.ColorGray, tcell.ColorBlack)
 			}
-			io.putString(teches[i].Name, 0, line)
+			io.putString(fmt.Sprintf("%s (%dRP)", teches[i].Name, game.GetScienceCostForTech(category, ids[i])), 0, line)
 			line++
 		}
 		io.screen.Show()
@@ -37,6 +42,7 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 		case "DOWN":
 			cursorPos++
 		case "ENTER":
+			pFact.CurrentResearchingTech[category] = ids[cursorPos]
 			return // TODO: set tech here
 		}
 	}
