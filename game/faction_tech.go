@@ -1,40 +1,60 @@
 package game
 
+import (
+	"moocli/math"
+)
+
 func (f *faction) GenerateTechAllowances() {
 	for cat := range f.canResearchTech {
 		for i := range f.canResearchTech[cat] {
-			f.canResearchTech[cat][i] = techTable[cat][i].alwaysAvailable || rnd.OneChanceFrom(2)
+			f.canResearchTech[cat][i] = true // techTable[cat][i].alwaysAvailable || rnd.OneChanceFrom(2)
 		}
 	}
 }
 
-func (f *faction) GetGeneralTechLevel() int {
-	highestLevel := 0
-	totalLevel := 0
-	for cat := range f.canResearchTech {
-		levelInCat := 0
-		for i := range f.canResearchTech[cat] {
-			if f.hasTech[cat][i] {
-				levelInCat = i
-			}
+func (f *faction) GetMaxTechIdInCategory(cat int) int {
+	highestLevel := -1
+	for i := range f.hasTech[cat] {
+		if f.hasTech[cat][i] {
+			highestLevel = i
 		}
-		if levelInCat > highestLevel {
-			highestLevel = levelInCat
-		}
-		totalLevel += levelInCat
 	}
-	return totalLevel - (2*highestLevel/10)
+	return highestLevel
 }
 
-func (f *faction) GetResearchableTechesInCategory(cat int) ([]*techStruct, []int) {
-	ret := make([]*techStruct, 0)
+func (f *faction) GetResearchableTechIdsInCategory(cat int) ([]int) {
 	retIds := make([]int, 0)
-	ftl := f.GetGeneralTechLevel()
-	for i := 0; i <= ftl; i++ {
+	maxTechGotten := f.GetMaxTechIdInCategory(cat)
+	maxResearchableId := 0
+	// todo: bugs here
+	if maxTechGotten == 0 {
+		maxResearchableId = 1
+	}
+	if maxTechGotten >= 0 {
+		maxResearchableId = 5 * math.DivideRoundingUp(maxTechGotten+1, 5)
+	}
+	// todo: bugs end (?) here
+	for i := 0; i <= maxResearchableId; i++ {
+		if i >= len(techTable[cat]) {
+			break
+		}
 		if f.canResearchTech[cat][i] && !f.hasTech[cat][i] {
-			ret = append(ret, techTable[cat][i])
+			//ret = append(ret, techTable[cat][i])
 			retIds = append(retIds, i)
 		}
 	}
-	return ret, retIds
+	return retIds
+}
+
+func (f *faction) applyNewTech(cat, id int) {
+	tech := GetTechByCatAndId(cat, id)
+	if tech.wasteRemovedPerCost > 0 && tech.wasteRemovedPerCost > f.currentCumulativeTech.wasteRemovedPerCost {
+		f.currentCumulativeTech.wasteRemovedPerCost = tech.wasteRemovedPerCost
+	}
+	if tech.factoryConstructionCost > 0 && tech.factoryConstructionCost < f.currentCumulativeTech.factoryConstructionCost {
+		f.currentCumulativeTech.factoryConstructionCost = tech.factoryConstructionCost
+	}
+	if tech.factoriesPerPopulation > 0 && tech.factoriesPerPopulation > f.currentCumulativeTech.factoriesPerPopulation {
+		f.currentCumulativeTech.factoriesPerPopulation = tech.factoriesPerPopulation
+	}
 }

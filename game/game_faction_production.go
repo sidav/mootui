@@ -33,7 +33,6 @@ func (g *Game) PerformResearchForFaction(f *faction) {
 			f.bcSpentInTechCategories[cat] = 0
 			f.hasTech[cat][f.CurrentResearchingTech[cat]] = true
 			f.CurrentResearchingTech[cat] = -1
-			// panic("watafuq man")
 			// TODO: create faction notification about completed research
 		}
 	}

@@ -94,8 +94,7 @@ func (g *Game) GetSliderString(p *planet, snum int) string {
 			buildPer10Turns := 10*spending/factCost
 			return fmt.Sprintf("%d.%d/turn", buildPer10Turns/10, buildPer10Turns%10)
 		} else {
-			//                                    it's int division rounding up
-			return fmt.Sprintf("%d turns", (factCost+spending-1)/spending)
+			return fmt.Sprintf("%d turns", math.DivideRoundingUp(factCost, spending))
 		}
 	case PSLIDER_ECO:
 		if g.GetPlanetWasteRemoval(p, true) >= g.GetPlanetWaste(p) {
@@ -110,7 +109,7 @@ func (g *Game) GetSliderString(p *planet, snum int) string {
 		}
 		return "Waste"
 	case PSLIDER_TECH:
-		return "Not implemented"
+		return fmt.Sprintf("%dRP", g.GetFactionSciencePerBc(p.GetFaction()) * g.GetPlanetBCForSlider(p, PSLIDER_TECH))
 	}
 	panic("Error")
 }

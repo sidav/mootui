@@ -1,7 +1,11 @@
 package game
 
 func (f *faction) getFactoryCost() int {
-	return 10
+	cost := f.currentCumulativeTech.factoryConstructionCost
+	if cost == 0 {
+		cost = 30
+	}
+	return cost
 }
 
 func (f *faction) getPopCost() int {
@@ -9,9 +13,17 @@ func (f *faction) getPopCost() int {
 }
 
 func (f *faction) getActiveFactoriesPerPop() int {
-	return 2
+	amount := f.currentCumulativeTech.factoriesPerPopulation
+	if amount == 0 {
+		amount = 1
+	}
+	return amount
 }
 
 func (f *faction) getWasteRemovedFor1Bc() int {
-	return 2
+	amount := f.currentCumulativeTech.wasteRemovedPerCost
+	if amount == 0 {
+		amount = 1
+	}
+	return amount
 }

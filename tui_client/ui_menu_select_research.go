@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"moocli/game"
+	"strings"
 )
 
 func (ui *uiStruct) showSelectResearchMenu(category int) {
 	cw, _ := io.getConsoleSize()
 	pFact := currGame.GetPlayerFaction()
-	teches, ids := pFact.GetResearchableTechesInCategory(category)
-	if len(teches) == 0 {
+	techIds := pFact.GetResearchableTechIdsInCategory(category)
+	if len(techIds) == 0 {
 		return
 	}
 	cursorPos := 0
@@ -18,18 +19,20 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 	for menuActive {
 		line := 0
 		io.clearScreen()
-		io.setStyle(tcell.ColorGray, tcell.ColorBlack)
-		io.drawStringCenteredAround("SELECT NEW RESEARCH", cw/2, line)
-		// todo: write category
+		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
+		io.drawStringCenteredAround("SELECT NEW " + strings.ToUpper(game.GetTechCategoryName(category)) + " RESEARCH",
+			cw/2, line)
 		line++
 		line++
-		for i := range teches {
+		for i := range techIds {
 			if i == cursorPos {
-				io.setStyle(tcell.ColorBlack, tcell.ColorGray)
+				io.setStyle(tcell.ColorBlack, tcell.ColorBeige)
 			} else {
-				io.setStyle(tcell.ColorGray, tcell.ColorBlack)
+				io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
 			}
-			io.putString(fmt.Sprintf("%s (%dRP)", teches[i].Name, game.GetScienceCostForTech(category, ids[i])), 0, line)
+			io.putString(fmt.Sprintf("%s (Tech %d - %dRP)",
+				game.GetTechByCatAndId(category, techIds[i]).Name, techIds[i],
+				game.GetScienceCostForTech(category, techIds[i])), 1, line)
 			line++
 		}
 		io.screen.Show()
@@ -42,7 +45,7 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 		case "DOWN":
 			cursorPos++
 		case "ENTER":
-			pFact.CurrentResearchingTech[category] = ids[cursorPos]
+			pFact.CurrentResearchingTech[category] = techIds[cursorPos]
 			return // TODO: set tech here
 		}
 	}

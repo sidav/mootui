@@ -5,16 +5,24 @@ type faction struct {
 	storedBc           int
 	colorName          string
 
-	hasTech                 [TECH_CATEGORIES][TECH_IN_CATEGORY]bool
-	canResearchTech         [TECH_CATEGORIES][TECH_IN_CATEGORY]bool
+	hasTech                 [TECH_CATEGORIES][]bool
+	canResearchTech         [TECH_CATEGORIES][]bool
 	CurrentResearchingTech  [TECH_CATEGORIES]int // -1 means no tech selected
 	bcSpentInTechCategories [TECH_CATEGORIES]int
 
-	bcInReserve int
+	bcInReserve int // TODO: use
+
+	// It will be updated when any new tech is acquired
+	// should be used ONLY in calculations
+	currentCumulativeTech techStruct
 }
 
 func createFaction(colorName string) *faction {
 	f := &faction{colorName: colorName}
+	for cat := 0; cat < TECH_CATEGORIES; cat++ {
+		f.hasTech[cat] = make([]bool, len(techTable[cat]))
+		f.canResearchTech[cat] = make([]bool, len(techTable[cat]))
+	}
 	f.GenerateTechAllowances()
 	for i := range f.CurrentResearchingTech {
 		f.CurrentResearchingTech[i] = -1

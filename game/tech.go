@@ -1,95 +1,144 @@
 package game
 
-import "moocli/math"
+import "math"
 
 const TECH_CATEGORIES = 6
-const TECH_IN_CATEGORY = 2
+
+var categoryNames = []string{
+	"Computers",
+	"Construction",
+	"Force fields",
+	"Planetology",
+	"Propulsion",
+	"Weapons",
+}
 
 func GetScienceCostForTech(cat, id int) int {
-	return 200 + math.PowInt(12, id+1)/math.PowInt(10, id+1)
+	const expFactor = 1.1
+	id += 1
+	idFloat := float64(id)
+	return 220 * int(idFloat*math.Pow(expFactor, idFloat))
+}
+
+func GetTechByCatAndId(cat, id int) *techStruct {
+	return techTable[cat][id]
+}
+
+func GetTechCategoryName(cat int) string {
+	return categoryNames[cat]
 }
 
 type techStruct struct {
 	Name                    string
 	Description             string
-	wasteRemovalCost        int
 	wasteRemovedPerCost     int
 	factoryConstructionCost int
 	factoriesPerPopulation  int
 	alwaysAvailable         bool
+	unused                  bool
 }
 
-var techTable = [TECH_CATEGORIES][TECH_IN_CATEGORY]*techStruct{
+var techTable = [TECH_CATEGORIES][]*techStruct{
 	// COMPUTERS
 	{
 		{
-			Name:                "Basic robotic controls",
-			wasteRemovalCost:    2,
-			wasteRemovedPerCost: 1,
-			alwaysAvailable:     true,
+			Name:                   "Basic robotic controls",
+			factoriesPerPopulation: 2,
+			alwaysAvailable:        true,
 		},
 		{
 			Name:                "Improved robotic controls",
-			wasteRemovalCost:    3,
-			wasteRemovedPerCost: 2,
+			factoriesPerPopulation: 3,
 		},
 	},
 	// CONSTRUCTION
 	{
 		{
-			Name:                "Basic factories cost",
-			wasteRemovalCost:    2,
-			wasteRemovedPerCost: 1,
-			alwaysAvailable:     true,
+			Name:                    "Basic factories cost",
+			factoryConstructionCost: 20,
+			alwaysAvailable:         true,
 		},
 		{
-			Name:                "Improved factories cost",
-			wasteRemovalCost:    3,
-			wasteRemovedPerCost: 2,
+			Name:                    "Improved factories cost",
+			factoryConstructionCost: 15,
 		},
 	},
 	// FORCE FIELDS
 	{
 		{
-			Name:                "Basic shields",
-			alwaysAvailable:     true,
+			Name:            "Basic shields",
+			alwaysAvailable: true,
 		},
 		{
-			Name:                "Improved shields",
+			Name: "Improved shields",
 		},
 	},
 	// PLANETOLOGY
 	{
 		{
 			Name:                "Basic waste removal",
-			wasteRemovalCost:    2,
 			wasteRemovedPerCost: 1,
 			alwaysAvailable:     true,
 		},
 		{
+			unused: true,
+		},
+		{
+			unused: true,
+		},
+		{
 			Name:                "Improved waste removal",
-			wasteRemovalCost:    3,
 			wasteRemovedPerCost: 2,
+		},
+		{
+			unused: true,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                "Further improved waste removal",
+			wasteRemovedPerCost: 2,
+		},
+		{
+			unused: true,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                "Very improved waste removal",
+			wasteRemovedPerCost: 3,
+		},
+		{
+			unused: true,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                "Extremely improved waste removal",
+			wasteRemovedPerCost: 4,
 		},
 	},
 	// PROPULSION
 	{
 		{
-			Name:                "Basic engines",
-			alwaysAvailable:     true,
+			Name:            "Basic engines",
+			alwaysAvailable: true,
 		},
 		{
-			Name:                "Improved engines",
+			Name: "Improved engines",
 		},
 	},
 	// WEAPONS
 	{
 		{
-			Name:                "Basic weapons",
-			alwaysAvailable:     true,
+			Name:            "Basic weapons",
+			alwaysAvailable: true,
 		},
 		{
-			Name:                "Improved weapons",
+			Name: "Improved weapons",
 		},
 	},
 }
