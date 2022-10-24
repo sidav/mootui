@@ -42,61 +42,61 @@ type techStruct struct {
 var techTable = [TECH_CATEGORIES][]*techStruct{
 	// COMPUTERS
 	{
-		{
-			Name:                   "Basic robotic controls",
-			factoriesPerPopulation: 2,
-			alwaysAvailable:        true,
-		},
-		{
-			unused: true,
-		},
-		{
-			Name:                   "Improved robotic controls",
-			factoriesPerPopulation: 3,
-		},
-		{
-			unused: true,
-		},
-		{
-			Name:                   "Multi-adjusted robotic controls",
-			factoriesPerPopulation: 4,
-		},
-		{
-			unused: true,
-		},
-		{
-			Name:                   "Neural robotic controls",
-			factoriesPerPopulation: 5,
-		},
+		//{
+		//	Name:                   "Basic robotic controls",
+		//	factoriesPerPopulation: 2,
+		//	alwaysAvailable:        true,
+		//},
+		//{
+		//	unused: true,
+		//},
+		//{
+		//	Name:                   "Improved robotic controls",
+		//	factoriesPerPopulation: 3,
+		//},
+		//{
+		//	unused: true,
+		//},
+		//{
+		//	Name:                   "Multi-adjusted robotic controls",
+		//	factoriesPerPopulation: 4,
+		//},
+		//{
+		//	unused: true,
+		//},
+		//{
+		//	Name:                   "Neural robotic controls",
+		//	factoriesPerPopulation: 5,
+		//},
 	},
 	// CONSTRUCTION
 	{
-		{
-			Name:                    "Basic factories cost",
-			factoryConstructionCost: 20,
-			alwaysAvailable:         true,
-		},
-		{
-			unused: true,
-		},
-		{
-			Name:                    "Improved factories cost",
-			factoryConstructionCost: 15,
-		},
-		{
-			unused: true,
-		},
-		{
-			Name:                    "Unified factories components",
-			factoryConstructionCost: 12,
-		},
-		{
-			unused: true,
-		},
-		{
-			Name:                    "Factories 3D-printing",
-			factoryConstructionCost: 10,
-		},
+		//{
+		//	Name:                    "Basic factories cost",
+		//	factoryConstructionCost: 20,
+		//	alwaysAvailable:         true,
+		//},
+		//{
+		//	unused: true,
+		//},
+		//{
+		//	Name:                    "Improved factories cost",
+		//	factoryConstructionCost: 15,
+		//},
+		//{
+		//	unused: true,
+		//},
+		//{
+		//	Name:                    "Unified factories components",
+		//	factoryConstructionCost: 12,
+		//},
+		//{
+		//	unused: true,
+		//},
+		//{
+		//	Name:                    "Factories 3D-printing",
+		//	factoryConstructionCost: 10,
+		//},
 	},
 	// FORCE FIELDS
 	{

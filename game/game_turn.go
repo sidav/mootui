@@ -56,9 +56,6 @@ func (g *Game) buildIndustry(star *StarStruct, spentBc int) {
 
 func (g *Game) buildEco(star *StarStruct) {
 	p := star.planet
-	if p.pop == p.GetMaxPop() {
-		return
-	}
 	totalGrowth := g.GetNaturalGrowthForPlanet(p)
 	remainingEcoBc := g.GetPlanetBCForSlider(p, PSLIDER_ECO) - g.GetBcRequiredForPlanetWasteRemoval(p)
 	if remainingEcoBc > 0 {
@@ -82,7 +79,7 @@ func (g *Game) buildEco(star *StarStruct) {
 		}
 		p.colonizedBy.addNotification(star.Name + " has ecological disaster",
 			fmt.Sprintf("Population reduces by %d.%d from industrial waste", negGrowth/10, negGrowth%10))
-	} else {
+	} else if p.pop < p.GetMaxPop() {
 		p.pop += totalGrowth / 10
 		p.popTenths += totalGrowth % 10
 		if p.popTenths >= 10 {

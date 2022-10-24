@@ -1,6 +1,8 @@
 package game
 
-import "moocli/lib"
+import (
+	"moocli/lib"
+)
 
 func (f *faction) GenerateTechAllowances() {
 	for cat := range f.canResearchTech {
@@ -47,16 +49,16 @@ func (f *faction) GetResearchableTechIdsInCategory(cat int) ([]int) {
 
 func (f *faction) applyNewTech(cat, id int) {
 	tech := GetTechByCatAndId(cat, id)
-	if tech.wasteRemovedPerCost > 0 && tech.wasteRemovedPerCost > f.currentCumulativeTech.wasteRemovedPerCost {
+	if tech.wasteRemovedPerCost > f.currentCumulativeTech.wasteRemovedPerCost {
 		f.currentCumulativeTech.wasteRemovedPerCost = tech.wasteRemovedPerCost
 	}
 	if tech.factoryConstructionCost > 0 && tech.factoryConstructionCost < f.currentCumulativeTech.factoryConstructionCost {
 		f.currentCumulativeTech.factoryConstructionCost = tech.factoryConstructionCost
 	}
-	if tech.factoriesPerPopulation > 0 && tech.factoriesPerPopulation > f.currentCumulativeTech.factoriesPerPopulation {
+	if tech.factoriesPerPopulation > f.currentCumulativeTech.factoriesPerPopulation {
 		f.currentCumulativeTech.factoriesPerPopulation = tech.factoriesPerPopulation
 	}
-	if tech.terraformingPopAddition > 0 && tech.terraformingPopAddition > f.currentCumulativeTech.terraformingPopAddition {
+	if tech.terraformingPopAddition > f.currentCumulativeTech.terraformingPopAddition {
 		f.currentCumulativeTech.terraformingPopAddition = tech.terraformingPopAddition
 	}
 }
