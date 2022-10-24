@@ -10,7 +10,9 @@ type planet struct {
 	bcSpentOnInd           int // remaining from previous turn, "unbuilt" factory, upgrade in progress etc
 	pop                    int
 	popTenths              int // it's "3" in "4.3 pop"
-	maxPop                 int
+	baseMaxPop             int
+	popGivenByTerraforming int
+	bcSpentOnTerraforming  int
 	special, growth        int
 	prodSliders            [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
 }
@@ -19,6 +21,10 @@ func (p *planet) setColonyFor(f *faction) {
 	p.setSlidersToInitialValues()
 	p.colonizedBy = f
 	p.currentFactoriesPerPop = f.getActiveFactoriesPerPop()
+}
+
+func (p *planet) GetMaxPop() int {
+	return p.baseMaxPop + p.popGivenByTerraforming
 }
 
 func (p *planet) IsColonized() bool {
@@ -38,7 +44,11 @@ func (p *planet) GetPlanetTypeName() string {
 }
 
 func (p *planet) GetPopulationStrings() (string, string) {
-	return strconv.Itoa(p.pop) + "." + strconv.Itoa(p.popTenths), strconv.Itoa(p.maxPop)
+	return strconv.Itoa(p.pop) + "." + strconv.Itoa(p.popTenths), strconv.Itoa(p.GetMaxPop())
+}
+
+func (p *planet) canBeTerraformed() bool {
+	return p.popGivenByTerraforming < p.colonizedBy.currentCumulativeTech.terraformingPopAddition
 }
 
 func (p *planet) factoriesUpgradeNeeded() bool {

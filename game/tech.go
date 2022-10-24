@@ -34,6 +34,7 @@ type techStruct struct {
 	wasteRemovedPerCost     int
 	factoryConstructionCost int
 	factoriesPerPopulation  int
+	terraformingPopAddition int
 	alwaysAvailable         bool
 	unused                  bool
 }
@@ -50,21 +51,21 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 			unused: true,
 		},
 		{
-			Name:                "Improved robotic controls",
+			Name:                   "Improved robotic controls",
 			factoriesPerPopulation: 3,
 		},
 		{
 			unused: true,
 		},
 		{
-			Name:                "Multi-adjusted robotic controls",
+			Name:                   "Multi-adjusted robotic controls",
 			factoriesPerPopulation: 4,
 		},
 		{
 			unused: true,
 		},
 		{
-			Name:                "Neural robotic controls",
+			Name:                   "Neural robotic controls",
 			factoriesPerPopulation: 5,
 		},
 	},
@@ -128,7 +129,8 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 			unused: true,
 		},
 		{
-			unused: true,
+			Name:                "Basic terraforming +10",
+			terraformingPopAddition: 10,
 		},
 		{
 			Name:                "Further improved waste removal",
@@ -138,7 +140,8 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 			unused: true,
 		},
 		{
-			unused: true,
+			Name:                "Improved terraforming +20",
+			terraformingPopAddition: 20,
 		},
 		{
 			Name:                "Very improved waste removal",
@@ -148,7 +151,8 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 			unused: true,
 		},
 		{
-			unused: true,
+			Name:                "Deep terraforming +30",
+			terraformingPopAddition: 30,
 		},
 		{
 			Name:                "Extremely improved waste removal",

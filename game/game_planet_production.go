@@ -62,7 +62,7 @@ func (g *Game) GetPopGrowthForBCs(p *planet, bcs int) int {
 
 // multiplied by 10!
 func (g *Game) GetNaturalGrowthForPlanet(p *planet) int {
-	grPerc := 100 - (100 * (p.pop + (g.GetPlanetWaste(p) - g.GetPlanetWasteRemoval(p, false))) / p.maxPop)
+	grPerc := 100 - (100 * (p.pop + (g.GetPlanetWaste(p) - g.GetPlanetWasteRemoval(p, false))) / p.GetMaxPop())
 	switch p.growth {
 	case PGROWTH_HOSTILE:
 		grPerc /= 2
@@ -103,8 +103,11 @@ func (g *Game) GetSliderString(p *planet, snum int) string {
 		if g.GetPlanetWasteRemoval(p, true) >= g.GetPlanetWaste(p) {
 			remEcoBc := g.GetPlanetBCForSlider(p, PSLIDER_ECO) - g.GetBcRequiredForPlanetWasteRemoval(p)
 			if remEcoBc > 0 {
+				if p.canBeTerraformed() {
+					return "Terraform"
+				}
 				g := g.GetPopGrowthForBCs(p, remEcoBc)
-				if g > 0 && p.pop < p.maxPop {
+				if g > 0 && p.pop < p.GetMaxPop() {
 					return fmt.Sprintf("+%d.%d pop", g/10, g%10)
 				}
 			}

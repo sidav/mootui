@@ -5,7 +5,7 @@ import "moocli/lib"
 func (f *faction) GenerateTechAllowances() {
 	for cat := range f.canResearchTech {
 		for i := range f.canResearchTech[cat] {
-			f.canResearchTech[cat][i] = techTable[cat][i].alwaysAvailable || rnd.OneChanceFrom(2)
+			f.canResearchTech[cat][i] = true || techTable[cat][i].alwaysAvailable || rnd.OneChanceFrom(2)
 			// !techTable[cat][i].unused
 		}
 	}
@@ -55,5 +55,8 @@ func (f *faction) applyNewTech(cat, id int) {
 	}
 	if tech.factoriesPerPopulation > 0 && tech.factoriesPerPopulation > f.currentCumulativeTech.factoriesPerPopulation {
 		f.currentCumulativeTech.factoriesPerPopulation = tech.factoriesPerPopulation
+	}
+	if tech.terraformingPopAddition > 0 && tech.terraformingPopAddition > f.currentCumulativeTech.terraformingPopAddition {
+		f.currentCumulativeTech.terraformingPopAddition = tech.terraformingPopAddition
 	}
 }

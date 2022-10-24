@@ -8,6 +8,10 @@ func (f *faction) getFactoryCost() int {
 	return cost
 }
 
+func (f *faction) getFactoryUpgradeCost() int {
+	return (f.getFactoryCost() + 1) / 2
+}
+
 func (f *faction) getPopCost() int {
 	return 20
 }

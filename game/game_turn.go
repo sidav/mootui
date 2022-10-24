@@ -35,7 +35,7 @@ func (g *Game) buildIndustry(star *StarStruct, spentBc int) {
 	// first, look if any upgrade is needed
 	if p.factoriesUpgradeNeeded() {
 		p.bcSpentOnInd += spentBc
-		if p.bcSpentOnInd >= p.factories * FACTORY_UPGRADE_COST {
+		if p.bcSpentOnInd >= p.factories * p.colonizedBy.getFactoryUpgradeCost() {
 			p.currentFactoriesPerPop++
 			p.bcSpentOnInd = 0
 		}
@@ -56,13 +56,21 @@ func (g *Game) buildIndustry(star *StarStruct, spentBc int) {
 
 func (g *Game) buildEco(star *StarStruct) {
 	p := star.planet
-	if p.pop == p.maxPop {
+	if p.pop == p.GetMaxPop() {
 		return
 	}
 	totalGrowth := g.GetNaturalGrowthForPlanet(p)
-	remEcoBc := g.GetPlanetBCForSlider(p, PSLIDER_ECO) - g.GetBcRequiredForPlanetWasteRemoval(p)
-	if remEcoBc > 0 {
-		totalGrowth += g.GetPopGrowthForBCs(p, remEcoBc)
+	remainingEcoBc := g.GetPlanetBCForSlider(p, PSLIDER_ECO) - g.GetBcRequiredForPlanetWasteRemoval(p)
+	if remainingEcoBc > 0 {
+		if p.canBeTerraformed() {
+			p.bcSpentOnTerraforming += remainingEcoBc
+			if p.bcSpentOnTerraforming >= TERRAFORMING_COST_PER_POP {
+				p.popGivenByTerraforming++
+				p.bcSpentOnTerraforming = 0
+			}
+		} else {
+			totalGrowth += g.GetPopGrowthForBCs(p, remainingEcoBc)
+		}
 	}
 	if totalGrowth < 0 {
 		negGrowth := lib.AbsInt(totalGrowth)
@@ -82,8 +90,8 @@ func (g *Game) buildEco(star *StarStruct) {
 			p.popTenths -= 10
 		}
 	}
-	if p.pop >= p.maxPop {
-		p.pop = p.maxPop
+	if p.pop >= p.GetMaxPop() {
+		p.pop = p.GetMaxPop()
 		p.popTenths = 0
 		p.colonizedBy.addNotification(star.Name + " has grown to maximum",
 			fmt.Sprintf("Reached maximum of %d population", p.pop))

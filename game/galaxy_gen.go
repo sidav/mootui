@@ -87,7 +87,7 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 			planetType: starsDataTable[starTypeIndex].selectPlanetTypeByRoll(planetTypeRoll),
 		},
 	}
-	star.planet.maxPop = rnd.RandInRange(1, 4) * sTablePlanets[star.planet.planetType].baseMaxPopulation
+	star.planet.baseMaxPop = rnd.RandInRange(1, 4) * sTablePlanets[star.planet.planetType].baseMaxPopulation
 
 	// set growth
 	star.planet.growth = PGROWTH_NORMAL
@@ -96,7 +96,7 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 	}
 	if star.planet.planetType > PLANET_TYPE_DESERT && rnd.Rand(12) == 0 {
 		star.planet.growth = PGROWTH_FERTILE
-		star.planet.maxPop += 25 * star.planet.maxPop / 100
+		star.planet.baseMaxPop += 25 * star.planet.baseMaxPop / 100
 	}
 
 	// set planet special
@@ -151,6 +151,6 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	currStar.planet.planetType = PLANET_TYPE_TERRAN
 	currStar.planet.growth = PGROWTH_NORMAL
 	currStar.planet.special = PSPECIAL_NORMAL
-	currStar.planet.maxPop = 80
+	currStar.planet.baseMaxPop = 80
 	currStar.planet.pop = 10
 }

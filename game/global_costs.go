@@ -1,5 +1,5 @@
 package game
 
 const (
-	FACTORY_UPGRADE_COST = 10
+	TERRAFORMING_COST_PER_POP = 20
 )
