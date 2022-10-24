@@ -2,7 +2,7 @@ package game
 
 import (
 	"fmt"
-	"moocli/math"
+	"moocli/lib"
 )
 
 func (g *Game) ProcessTurn() {
@@ -16,8 +16,8 @@ func (g *Game) ProcessTurn() {
 			indBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_IND)
 			// ecoBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_ECO)
 
-			g.growColonizedPlanetPop(star)
-			g.buildFactories(star, indBC)
+			g.buildEco(star)
+			g.buildIndustry(star, indBC)
 
 			g.adjustEcoSliderToEliminatePollution(star.GetPlanet())
 		}
@@ -27,21 +27,34 @@ func (g *Game) ProcessTurn() {
 	}
 }
 
-func (g *Game) buildFactories(star *StarStruct, spentBc int) {
+func (g *Game) buildIndustry(star *StarStruct, spentBc int) {
+	if spentBc == 0 {
+		return
+	}
 	p := star.planet
+	// first, look if any upgrade is needed
+	if p.factoriesUpgradeNeeded() {
+		p.bcSpentOnInd += spentBc
+		if p.bcSpentOnInd >= p.factories * FACTORY_UPGRADE_COST {
+			p.currentFactoriesPerPop++
+			p.bcSpentOnInd = 0
+		}
+		return
+	}
+
 	if p.factories == g.GetMaxFactoriesForPlanet(p) {
 		return
 	}
 	fct, rem := g.GetPlanetFactoriesConstructedAndRemainderBC(p, spentBc)
 	p.factories += fct
-	p.bcRemainingForFactory = rem
+	p.bcSpentOnInd = rem
 	if p.factories == g.GetMaxFactoriesForPlanet(p) {
 		p.colonizedBy.addNotification(star.Name + " industry reached peak",
 			fmt.Sprintf("Reached maximum of %d factories", p.factories))
 	}
 }
 
-func (g *Game) growColonizedPlanetPop(star *StarStruct) {
+func (g *Game) buildEco(star *StarStruct) {
 	p := star.planet
 	if p.pop == p.maxPop {
 		return
@@ -52,7 +65,7 @@ func (g *Game) growColonizedPlanetPop(star *StarStruct) {
 		totalGrowth += g.GetPopGrowthForBCs(p, remEcoBc)
 	}
 	if totalGrowth < 0 {
-		negGrowth := math.AbsInt(totalGrowth)
+		negGrowth := lib.AbsInt(totalGrowth)
 		p.pop -= negGrowth / 10
 		p.popTenths -= negGrowth % 10
 		if p.popTenths < 0 {
@@ -75,5 +88,4 @@ func (g *Game) growColonizedPlanetPop(star *StarStruct) {
 		p.colonizedBy.addNotification(star.Name + " has grown to maximum",
 			fmt.Sprintf("Reached maximum of %d population", p.pop))
 	}
-
 }

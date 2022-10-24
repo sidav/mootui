@@ -146,3 +146,19 @@ func GetSliderName(s int) string {
 	}
 	return "ERROR"
 }
+
+func GetSliderShortName(s int) string {
+	switch s {
+	case PSLIDER_SHIP:
+		return "SHP"
+	case PSLIDER_DEF:
+		return "DEF"
+	case PSLIDER_IND:
+		return "IND"
+	case PSLIDER_ECO:
+		return "ECO"
+	case PSLIDER_TECH:
+		return "TCH"
+	}
+	return "ERROR"
+}

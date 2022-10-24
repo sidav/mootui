@@ -1,8 +1,6 @@
 package game
 
-import (
-	"moocli/math"
-)
+import "moocli/lib"
 
 func (f *faction) GenerateTechAllowances() {
 	for cat := range f.canResearchTech {
@@ -32,7 +30,7 @@ func (f *faction) GetResearchableTechIdsInCategory(cat int) ([]int) {
 		maxResearchableId = 1
 	}
 	if maxTechGotten >= 0 {
-		maxResearchableId = 5 * math.DivideRoundingUp(maxTechGotten+1, 5)
+		maxResearchableId = 5 * lib.DivideRoundingUp(maxTechGotten+1, 5)
 	}
 	// todo: bugs end (?) here
 	for i := 0; i <= maxResearchableId; i++ {

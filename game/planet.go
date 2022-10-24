@@ -3,15 +3,22 @@ package game
 import "strconv"
 
 type planet struct {
-	colonizedBy           *faction
-	planetType            int
-	factories             int
-	bcRemainingForFactory int // remaining from previous turn, "unbuilt" factory
-	pop                   int
-	popTenths             int // it's "3" in "4.3 pop"
-	maxPop                int
-	special, growth       int
-	prodSliders           [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
+	colonizedBy            *faction
+	planetType             int
+	factories              int
+	currentFactoriesPerPop int // stored so that
+	bcSpentOnInd           int // remaining from previous turn, "unbuilt" factory, upgrade in progress etc
+	pop                    int
+	popTenths              int // it's "3" in "4.3 pop"
+	maxPop                 int
+	special, growth        int
+	prodSliders            [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
+}
+
+func (p *planet) setColonyFor(f *faction) {
+	p.setSlidersToInitialValues()
+	p.colonizedBy = f
+	p.currentFactoriesPerPop = f.getActiveFactoriesPerPop()
 }
 
 func (p *planet) IsColonized() bool {
@@ -32,6 +39,10 @@ func (p *planet) GetPlanetTypeName() string {
 
 func (p *planet) GetPopulationStrings() (string, string) {
 	return strconv.Itoa(p.pop) + "." + strconv.Itoa(p.popTenths), strconv.Itoa(p.maxPop)
+}
+
+func (p *planet) factoriesUpgradeNeeded() bool {
+	return p.factories > 0 && p.currentFactoriesPerPop < p.colonizedBy.getActiveFactoriesPerPop()
 }
 
 const (

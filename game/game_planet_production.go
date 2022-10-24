@@ -2,16 +2,16 @@ package game
 
 import (
 	"fmt"
-	"moocli/math"
+	"moocli/lib"
 )
 
 func (g *Game) GetMaxFactoriesForPlanet(p *planet) int {
-	return p.pop * p.colonizedBy.getActiveFactoriesPerPop()
+	return p.pop * p.currentFactoriesPerPop
 }
 
 func (g *Game) GetActiveFactoriesForPlanet(p *planet) int {
 	activeFactoriesPerPopulation := p.colonizedBy.getActiveFactoriesPerPop()
-	return math.MinInt(p.pop*activeFactoriesPerPopulation, p.factories)
+	return lib.MinInt(p.pop*activeFactoriesPerPopulation, p.factories)
 }
 
 func (g *Game) GetPlanetWaste(p *planet) int {
@@ -23,9 +23,9 @@ func (g *Game) GetPlanetFactoriesConstructedAndRemainderBC(p *planet, spentBcs i
 	if p.factories >= maxFactories {
 		return 0, 0
 	}
-	spentBcs += p.bcRemainingForFactory
+	spentBcs += p.bcSpentOnInd
 	factoryCost := p.colonizedBy.getFactoryCost()
-	builtFactories := math.MinInt(spentBcs/factoryCost, maxFactories-p.factories)
+	builtFactories := lib.MinInt(spentBcs/factoryCost, maxFactories-p.factories)
 	return builtFactories, spentBcs % factoryCost
 }
 
@@ -34,7 +34,7 @@ func (g *Game) GetPlanetWasteRemoval(p *planet, gross bool) int {
 	if gross {
 		return ecoBc * p.colonizedBy.getWasteRemovedFor1Bc()
 	}
-	return math.MinInt(ecoBc*2, g.GetPlanetWaste(p))
+	return lib.MinInt(ecoBc*2, g.GetPlanetWaste(p))
 }
 
 func (g *Game) GetBcRequiredForPlanetWasteRemoval(p *planet) int {
@@ -89,12 +89,15 @@ func (g *Game) GetSliderString(p *planet, snum int) string {
 		if spending == 0 {
 			return "None"
 		}
+		if p.factoriesUpgradeNeeded() {
+			return "Upgrade"
+		}
 		factCost := p.colonizedBy.getFactoryCost()
 		if spending > factCost {
 			buildPer10Turns := 10*spending/factCost
 			return fmt.Sprintf("%d.%d/turn", buildPer10Turns/10, buildPer10Turns%10)
 		} else {
-			return fmt.Sprintf("%d turns", math.DivideRoundingUp(factCost, spending))
+			return fmt.Sprintf("%d turns", lib.DivideRoundingUp(factCost, spending))
 		}
 	case PSLIDER_ECO:
 		if g.GetPlanetWasteRemoval(p, true) >= g.GetPlanetWaste(p) {
