@@ -7,7 +7,7 @@ import (
 func (f *faction) GenerateTechAllowances() {
 	for cat := range f.canResearchTech {
 		for i := range f.canResearchTech[cat] {
-			f.canResearchTech[cat][i] = true // techTable[cat][i].alwaysAvailable || rnd.OneChanceFrom(2)
+			f.canResearchTech[cat][i] = techTable[cat][i].alwaysAvailable || rnd.OneChanceFrom(2)
 			// !techTable[cat][i].unused
 		}
 	}

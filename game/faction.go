@@ -9,12 +9,13 @@ type faction struct {
 	canResearchTech         [TECH_CATEGORIES][]bool
 	CurrentResearchingTech  [TECH_CATEGORIES]int // -1 means no tech selected
 	bcSpentInTechCategories [TECH_CATEGORIES]int
-
-	bcInReserve int // TODO: use
-
 	// It will be updated when any new tech is acquired
 	// should be used ONLY in calculations
 	currentCumulativeTech techStruct
+
+	bcInReserve int // TODO: use
+
+	notificationsForThisTurn []*notificationStruct
 }
 
 func createFaction(colorName string) *faction {

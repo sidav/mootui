@@ -8,6 +8,7 @@ func (ui *uiStruct) handleControls(keyPressed string) {
 	}
 	if keyPressed == "n" {
 		currGame.ProcessTurn()
+		ui.turnEnded = true
 	}
 }
 

@@ -7,6 +7,7 @@ const (
 )
 
 type uiStruct struct {
+	turnEnded        bool
 	cursorX, cursorY int // REAL coordinates
 	camtlX, camtlY   int // camera REAL top left coord
 }

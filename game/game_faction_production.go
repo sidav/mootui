@@ -34,6 +34,7 @@ func (g *Game) PerformResearchForFaction(f *faction) {
 			f.bcSpentInTechCategories[cat] = 0
 			f.hasTech[cat][resId] = true
 			f.applyNewTech(cat, resId)
+			f.addNotification(GetTechCategoryName(cat) + " research completed", GetTechByCatAndId(cat, resId).Name)
 			f.CurrentResearchingTech[cat] = -1
 			// TODO: create faction notification about completed research
 		}

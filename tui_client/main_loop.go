@@ -25,15 +25,23 @@ func StartGame() {
 
 	for !gameShouldExit {
 		// show tech setup if needed
+		currUi.showThisTurnNotifications()
 		for cat := range playerFaction.CurrentResearchingTech {
 			if playerFaction.CurrentResearchingTech[cat] == -1 {
 				currUi.showSelectResearchMenu(cat)
 			}
 		}
-		currUi.centerScreenAroundCursorCoords()
-		currUi.DrawGalaxyScreen(currGame)
-		key := io.readKey()
-		gameShouldExit = key == "EXIT"
-		currUi.handleControls(key)
+		currUi.turnEnded = false
+		for !currUi.turnEnded {
+			currUi.centerScreenAroundCursorCoords()
+			currUi.DrawGalaxyScreen(currGame)
+			key := io.readKey()
+			currUi.handleControls(key)
+
+			gameShouldExit = key == "EXIT"
+			if gameShouldExit {
+				break
+			}
+		}
 	}
 }

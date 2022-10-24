@@ -13,6 +13,13 @@ func PowInt(base, power int) int {
 	return ret
 }
 
+func AbsInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 func DivideRoundingUp(x, divisor int) int {
 	return (x + divisor-1) / divisor
 }

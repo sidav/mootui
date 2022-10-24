@@ -47,8 +47,25 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 			alwaysAvailable:        true,
 		},
 		{
+			unused: true,
+		},
+		{
 			Name:                "Improved robotic controls",
 			factoriesPerPopulation: 3,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                "Multi-adjusted robotic controls",
+			factoriesPerPopulation: 4,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                "Neural robotic controls",
+			factoriesPerPopulation: 5,
 		},
 	},
 	// CONSTRUCTION
@@ -59,19 +76,36 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 			alwaysAvailable:         true,
 		},
 		{
+			unused: true,
+		},
+		{
 			Name:                    "Improved factories cost",
 			factoryConstructionCost: 15,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                    "Unified factories components",
+			factoryConstructionCost: 12,
+		},
+		{
+			unused: true,
+		},
+		{
+			Name:                    "Factories 3D-printing",
+			factoryConstructionCost: 10,
 		},
 	},
 	// FORCE FIELDS
 	{
-		{
-			Name:            "Basic shields",
-			alwaysAvailable: true,
-		},
-		{
-			Name: "Improved shields",
-		},
+		//{
+		//	Name:            "Basic shields",
+		//	alwaysAvailable: true,
+		//},
+		//{
+		//	Name: "Improved shields",
+		//},
 	},
 	// PLANETOLOGY
 	{
@@ -123,22 +157,22 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 	},
 	// PROPULSION
 	{
-		{
-			Name:            "Basic engines",
-			alwaysAvailable: true,
-		},
-		{
-			Name: "Improved engines",
-		},
+		//{
+		//	Name:            "Basic engines",
+		//	alwaysAvailable: true,
+		//},
+		//{
+		//	Name: "Improved engines",
+		//},
 	},
 	// WEAPONS
 	{
-		{
-			Name:            "Basic weapons",
-			alwaysAvailable: true,
-		},
-		{
-			Name: "Improved weapons",
-		},
+		//{
+		//	Name:            "Basic weapons",
+		//	alwaysAvailable: true,
+		//},
+		//{
+		//	Name: "Improved weapons",
+		//},
 	},
 }
