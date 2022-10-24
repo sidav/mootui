@@ -153,5 +153,5 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	currStar.planet.special = PSPECIAL_NORMAL
 	currStar.planet.maxPop = 80
 	currStar.planet.pop = 10
-	currStar.planet.EqualizeSliders(true)
+	currStar.planet.setSlidersToInitialValues()
 }

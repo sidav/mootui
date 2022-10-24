@@ -24,6 +24,12 @@ func (p *planet) getLockedSlidersCount() int {
 	return l
 }
 
+func (p *planet) setSlidersToInitialValues() {
+	p.prodSliders[PSLIDER_IND].percent = 25
+	p.prodSliders[PSLIDER_ECO].percent = 65
+	p.prodSliders[PSLIDER_TECH].percent = 10
+}
+
 func (p *planet) EqualizeSliders(changeLocked bool) {
 	locks := 0
 	if !changeLocked {
@@ -112,7 +118,7 @@ func (p *planet) GetSliderPercent(num int) int {
 }
 
 func (p *planet) ChangeSliderPercent(diff int, sliderNum int) {
-	if diff > 0 && p.getSlidersSumByLock(false) - p.prodSliders[sliderNum].percent <= 0 {
+	if diff > 0 && p.getSlidersSumByLock(false)-p.prodSliders[sliderNum].percent <= 0 {
 		return
 	}
 	p.prodSliders[sliderNum].percent += diff
