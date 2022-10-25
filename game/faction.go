@@ -25,9 +25,9 @@ func createFaction(colorName string) *faction {
 		f.canResearchTech[cat] = make([]bool, len(techTable[cat]))
 	}
 	f.GenerateTechAllowances()
-	for i := range f.CurrentResearchingTech {
-		f.CurrentResearchingTech[i] = -1
-	}
+	//for i := range f.CurrentResearchingTech {
+	//	f.CurrentResearchingTech[i] = -1
+	//}
 	return f
 }
 

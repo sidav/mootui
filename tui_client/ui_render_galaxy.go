@@ -11,7 +11,7 @@ import (
 
 func (ui *uiStruct) DrawGalaxyScreen(g *game.Game) {
 	currGame = g
-	io.screen.Clear()
+	io.clearScreen()
 	stars := g.Galaxy.GetAllStars()
 	for _, star := range stars {
 		// fmt.Printf("STAR %d: %s at %d, %d\n", i, star.Name, star.X, star.Y)
