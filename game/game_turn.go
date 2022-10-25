@@ -69,6 +69,7 @@ func (g *Game) buildEco(star *StarStruct) {
 			totalGrowth += g.GetPopGrowthForBCs(p, remainingEcoBc)
 		}
 	}
+	// grow pop
 	if totalGrowth < 0 {
 		negGrowth := lib.AbsInt(totalGrowth)
 		p.pop -= negGrowth / 10
@@ -86,11 +87,11 @@ func (g *Game) buildEco(star *StarStruct) {
 			p.pop++
 			p.popTenths -= 10
 		}
-	}
-	if p.pop >= p.GetMaxPop() {
-		p.pop = p.GetMaxPop()
-		p.popTenths = 0
-		p.colonizedBy.addNotification(star.Name + " has grown to maximum",
-			fmt.Sprintf("Reached maximum of %d population", p.pop))
+		if p.pop >= p.GetMaxPop() {
+			p.pop = p.GetMaxPop()
+			p.popTenths = 0
+			p.colonizedBy.addNotification(star.Name + " has grown to maximum",
+				fmt.Sprintf("Reached maximum of %d population", p.pop))
+		}
 	}
 }
