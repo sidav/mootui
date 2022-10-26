@@ -128,12 +128,12 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 
 func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	minDist := 1 * g.H / 2
-	currInd := rnd.Rand(len(g.stars))
-	currStar := g.stars[currInd%len(g.stars)]
+	currIndex := rnd.Rand(len(g.stars))
+	currStar := g.stars[currIndex%len(g.stars)]
 	selected := false
 	for !selected {
 		selected = true
-		currStar = g.stars[currInd%len(g.stars)]
+		currStar = g.stars[currIndex%len(g.stars)]
 		if currStar.planet.IsColonized() {
 			selected = false
 		}
@@ -145,9 +145,10 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 				}
 			}
 		}
-		currInd++
+		currIndex++
 	}
 	currStar.planet.setColonyFor(f)
+	g.CreateOrAppendFleetWithShip(currStar.X, currStar.Y, f)
 	currStar.planet.planetType = PLANET_TYPE_TERRAN
 	currStar.planet.growth = PGROWTH_NORMAL
 	currStar.planet.special = PSPECIAL_NORMAL

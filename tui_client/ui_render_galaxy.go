@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"moocli/game"
+	"strconv"
 )
 
 func (ui *uiStruct) DrawGalaxyScreen(g *game.Game) {
@@ -17,9 +18,21 @@ func (ui *uiStruct) DrawGalaxyScreen(g *game.Game) {
 		// fmt.Printf("STAR %d: %s at %d, %d\n", i, star.Name, star.X, star.Y)
 		ui.drawStar(star)
 	}
+	fleets := g.Galaxy.GetAllFleets()
+	for _, fleet := range fleets {
+		ui.drawFleet(fleet)
+	}
 	ui.drawCursor()
 	ui.drawSidebarForCursorContents()
 	io.screen.Show()
+}
+
+func (ui *uiStruct) drawFleet(fleet *game.Fleet) {
+	fx, fy := fleet.GetCoords()
+	onScreenX, onScreenY := ui.realCoordsToScreenCoords(fx, fy)
+	onScreenX += GALAXY_CELL_W-1
+	io.setStyle(colorStringToTcell(fleet.GetOwner().GetColorName()), tcell.ColorBlack)
+	io.putString(strconv.Itoa(fleet.GetShipsNumber()), onScreenX, onScreenY)
 }
 
 func (ui *uiStruct) drawStar(star *game.StarStruct) {

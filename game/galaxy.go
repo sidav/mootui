@@ -3,6 +3,7 @@ package game
 type galaxyStruct struct {
 	W, H     int
 	stars    []*StarStruct
+	fleets   []*Fleet
 	factions []*faction
 }
 
@@ -17,4 +18,16 @@ func (gs *galaxyStruct) GetStarAt(x, y int) *StarStruct {
 
 func (gs *galaxyStruct) GetAllStars() []*StarStruct {
 	return gs.stars
+}
+
+func (gs *galaxyStruct) GetAllFleets() []*Fleet {
+	return gs.fleets
+}
+
+func (gs *galaxyStruct) CreateOrAppendFleetWithShip(x, y int, shipFaction *faction) {
+	// TODO: implement
+	gs.fleets = append(gs.fleets, &Fleet{
+		x: x, y: y,
+		owner: shipFaction},
+	)
 }
