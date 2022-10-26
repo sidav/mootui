@@ -24,10 +24,20 @@ func (gs *galaxyStruct) GetAllFleets() []*Fleet {
 	return gs.fleets
 }
 
+func (gs *galaxyStruct) GetFleetsAt(x, y int) (result []*Fleet) {
+	for _, f := range gs.fleets {
+		if f.x == x && f.y == y {
+			result = append(result, f)
+		}
+	}
+	return
+}
+
 func (gs *galaxyStruct) CreateOrAppendFleetWithShip(x, y int, shipFaction *faction) {
-	// TODO: implement
+	// TODO: implement, now it's a stub
 	gs.fleets = append(gs.fleets, &Fleet{
 		x: x, y: y,
 		owner: shipFaction},
 	)
+	gs.fleets[len(gs.fleets)-1].ResetDestination()
 }

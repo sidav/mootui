@@ -4,7 +4,7 @@ func (ui *uiStruct) handleControls(keyPressed string) {
 	ui.moveCursor(keyPressed)
 	star := ui.getStarAtCursor()
 	if keyPressed == "ENTER" && star != nil && star.GetPlanet().IsColonized() {
-		ui.colonyMenu(star)
+		ui.selectEntityFromGalaxyScreen()
 	}
 	if keyPressed == "n" {
 		currGame.ProcessTurn()

@@ -1,5 +1,7 @@
 package game
 
+const SHIP_DESIGNS_PER_FACTION = 6
+
 type faction struct {
 	isPlayerControlled bool
 	storedBc           int
@@ -16,6 +18,8 @@ type faction struct {
 	bcInReserve int // TODO: use
 
 	notificationsForThisTurn []*notificationStruct
+
+	shipsDesigns [SHIP_DESIGNS_PER_FACTION]*shipDesign
 }
 
 func createFaction(colorName string) *faction {

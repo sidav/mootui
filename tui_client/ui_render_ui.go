@@ -47,7 +47,7 @@ func (ui *uiStruct) renderSlider(x, y, w int, textOnLeft string,
 	}
 }
 
-func (ui *uiStruct) drawCursor() {
+func (ui *uiStruct) drawSelectCursor() {
 	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
 	osx, osy := ui.realCoordsToScreenCoords(ui.cursorX, ui.cursorY)
 	cursorW := GALAXY_CELL_W + 1
@@ -63,6 +63,26 @@ func (ui *uiStruct) drawCursor() {
 	io.putChar('┓', osx+cursorW, osy-1)
 	io.putChar('┗', osx, osy+2)
 	io.putChar('┛', osx+cursorW, osy+2)
+}
+
+func (ui *uiStruct) drawSendFleetCursor() {
+	io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
+	osx, osy := ui.realCoordsToScreenCoords(ui.cursorX, ui.cursorY)
+	cursorW := GALAXY_CELL_W + 1
+	star := ui.getStarAtCursor()
+	if star != nil {
+		cursorW = len(star.Name)
+		osx = osx - cursorW/2
+		cursorW++
+		io.setStyle(tcell.ColorGreen, tcell.ColorBlack)
+	} else {
+		osx--
+		io.setStyle(tcell.ColorRed, tcell.ColorBlack)
+	}
+	io.putChar('\\', osx, osy-1)
+	io.putChar('/', osx+cursorW, osy-1)
+	io.putChar('/', osx, osy+2)
+	io.putChar('\\', osx+cursorW, osy+2)
 }
 
 func (ui *uiStruct) drawSidebarForCursorContents() {

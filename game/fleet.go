@@ -1,9 +1,19 @@
 package game
 
 type Fleet struct {
-	owner        *faction
-	x, y         int
-	destX, destY int
+	owner         *faction
+	x, y          int
+	destX, destY  int
+
+	shipsByDesign [SHIP_DESIGNS_PER_FACTION]int
+}
+
+func (f *Fleet) ResetDestination() {
+	f.destX, f.destY = f.x, f.y
+}
+
+func (f *Fleet) IsUnderWay() bool {
+	return f.destX != f.x || f.destY != f.y
 }
 
 func (f *Fleet) GetShipsNumber() int {
@@ -12,6 +22,10 @@ func (f *Fleet) GetShipsNumber() int {
 
 func (f *Fleet) GetMaxTravelingDistance() int {
 	return 5 // TODO: remove this stub
+}
+
+func (f *Fleet) GetSpeed() int {
+	return 1 // TODO: remove this stub
 }
 
 func (f *Fleet) GetOwner() *faction {
@@ -24,4 +38,8 @@ func (f *Fleet) GetCoords() (int, int) {
 
 func (f *Fleet) GetTargetCoords() (int, int) {
 	return f.destX, f.destY
+}
+
+func (f *Fleet) SetTargetCoords(x, y int) {
+	f.destX, f.destY = x, y
 }

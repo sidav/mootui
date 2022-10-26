@@ -7,24 +7,39 @@ import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"moocli/game"
+	"moocli/graphic_primitives"
 	"strconv"
 )
 
-func (ui *uiStruct) DrawGalaxyScreen(g *game.Game) {
-	currGame = g
+func (ui *uiStruct) galaxyScreen() {
 	io.clearScreen()
-	stars := g.Galaxy.GetAllStars()
+	ui.DrawGalaxy()
+	ui.drawSelectCursor()
+	ui.drawSidebarForCursorContents()
+	io.screen.Show()
+}
+
+func (ui *uiStruct) DrawGalaxy() {
+	fleets := currGame.Galaxy.GetAllFleets()
+
+	for _, f := range fleets {
+		lineFromX, lineFromY := ui.realCoordsToScreenCoords(f.GetCoords())
+		lineToX, lineToY := ui.realCoordsToScreenCoords(f.GetTargetCoords())
+		line := graphic_primitives.GetLine(lineFromX+1, lineFromY, lineToX+1, lineToY)
+		io.setStyle(tcell.ColorDarkGreen, tcell.ColorBlack)
+		for _, p := range line {
+			io.putChar('*', p.X, p.Y)
+		}
+	}
+
+	stars := currGame.Galaxy.GetAllStars()
 	for _, star := range stars {
 		// fmt.Printf("STAR %d: %s at %d, %d\n", i, star.Name, star.X, star.Y)
 		ui.drawStar(star)
 	}
-	fleets := g.Galaxy.GetAllFleets()
 	for _, fleet := range fleets {
 		ui.drawFleet(fleet)
 	}
-	ui.drawCursor()
-	ui.drawSidebarForCursorContents()
-	io.screen.Show()
 }
 
 func (ui *uiStruct) drawFleet(fleet *game.Fleet) {

@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"moocli/graphic_primitives"
 	"moocli/lib"
 )
 
@@ -25,6 +26,7 @@ func (g *Game) ProcessTurn() {
 	for _, f := range g.Galaxy.factions {
 		g.PerformResearchForFaction(f)
 	}
+	g.moveFleets()
 }
 
 func (g *Game) buildIndustry(star *StarStruct, spentBc int) {
@@ -92,6 +94,21 @@ func (g *Game) buildEco(star *StarStruct) {
 			p.popTenths = 0
 			p.colonizedBy.addNotification(star.Name + " has grown to maximum",
 				fmt.Sprintf("Reached maximum of %d population", p.pop))
+		}
+	}
+}
+
+func (g *Game) moveFleets() {
+	for _, f := range g.Galaxy.fleets {
+		if !f.IsUnderWay() {
+			continue
+		}
+		movementLine := graphic_primitives.GetLine(f.x, f.y, f.destX, f.destY)
+		for i, coord := range movementLine {
+			if i > f.GetSpeed() {
+				break
+			}
+			f.x, f.y = coord.GetCoords()
 		}
 	}
 }

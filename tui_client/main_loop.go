@@ -34,7 +34,7 @@ func StartGame() {
 		currUi.turnEnded = false
 		for !currUi.turnEnded {
 			currUi.centerScreenAroundCursorCoords()
-			currUi.DrawGalaxyScreen(currGame)
+			currUi.galaxyScreen()
 			key := io.readKey()
 			currUi.handleControls(key)
 
