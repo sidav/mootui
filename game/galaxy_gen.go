@@ -28,6 +28,7 @@ func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
 		placeHomeworldForFaction(gs, f)
 	}
 	gs.factions[0].isPlayerControlled = true
+	placeOrionSystem(gs)
 
 	return gs
 }
@@ -104,14 +105,14 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 	spRoll := rnd.Rand(20) + star.staticData.poornessRollModifier
 	if spRoll <= 2 {
 		star.planet.special = PSPECIAL_POOR
-		if rnd.Rand(20) + star.staticData.poornessRollModifier <= 2 {
+		if rnd.Rand(20)+star.staticData.poornessRollModifier <= 2 {
 			star.planet.special = PSPECIAL_ULTRA_POOR
 		}
 	}
 	spRoll = rnd.Rand(20) + star.staticData.richnessRollModifier
-	if PLANET_TYPE_STEPPE - star.planet.planetType > spRoll {
+	if PLANET_TYPE_STEPPE-star.planet.planetType > spRoll {
 		star.planet.special = PSPECIAL_RICH
-		if rnd.Rand(20) + star.staticData.richnessRollModifier <= 6 {
+		if rnd.Rand(20)+star.staticData.richnessRollModifier <= 6 {
 			star.planet.special = PSPECIAL_ULTRA_RICH
 		}
 	}
@@ -154,4 +155,23 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 	currStar.planet.special = PSPECIAL_NORMAL
 	currStar.planet.baseMaxPop = 80
 	currStar.planet.pop = 10
+}
+
+func placeOrionSystem(gs *galaxyStruct) {
+	offset := rnd.Rand(len(gs.GetAllStars()))
+	for {
+		for _, s := range gs.stars {
+			if s.GetPlanet().IsColonized() {
+				continue
+			}
+			if offset <= 0 {
+				s.Name = "Orion"
+				s.staticData = starsDataTable[0]
+				s.planet.planetType = PLANET_TYPE_GAIA
+				s.planet.baseMaxPop = 150
+				return
+			}
+			offset--
+		}
+	}
 }

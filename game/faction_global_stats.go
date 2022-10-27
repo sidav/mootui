@@ -31,3 +31,7 @@ func (f *faction) getWasteRemovedFor1Bc() int {
 	}
 	return amount
 }
+
+func (f *faction) getVisionRange() int {
+	return 3
+}

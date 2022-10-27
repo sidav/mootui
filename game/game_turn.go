@@ -92,8 +92,8 @@ func (g *Game) buildEco(star *StarStruct) {
 		if p.pop >= p.GetMaxPop() {
 			p.pop = p.GetMaxPop()
 			p.popTenths = 0
-			p.colonizedBy.addNotification(star.Name + " has grown to maximum",
-				fmt.Sprintf("Reached maximum of %d population", p.pop))
+			//p.colonizedBy.addNotification(star.Name + " has grown to maximum",
+			//	fmt.Sprintf("Reached maximum of %d population", p.pop))
 		}
 	}
 }
