@@ -25,7 +25,7 @@ func (ui *uiStruct) DrawGalaxy() {
 	for _, f := range fleets {
 		lineFromX, lineFromY := ui.realCoordsToScreenCoords(f.GetCoords())
 		lineToX, lineToY := ui.realCoordsToScreenCoords(f.GetTargetCoords())
-		line := graphic_primitives.GetLine(lineFromX+1, lineFromY, lineToX+1, lineToY)
+		line := graphic_primitives.GetLine(lineFromX+2, lineFromY, lineToX+1, lineToY)
 		io.setStyle(tcell.ColorDarkGreen, tcell.ColorBlack)
 		for _, p := range line {
 			io.putChar('*', p.X, p.Y)

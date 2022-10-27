@@ -1,6 +1,6 @@
 package game
 
 type shipDesign struct {
-	Name    string
-	systems [4]sdsCode
+	Name           string
+	SpecialSystems [4]int // s
 }

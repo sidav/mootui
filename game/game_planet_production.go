@@ -44,6 +44,16 @@ func (g *Game) GetBcRequiredForPlanetWasteRemoval(p *planet) int {
 func (g *Game) GetPlanetProductionNetGross(p *planet) (int, int) {
 	handLabor := p.pop / 2 // TODO: race-specific hand labor factor
 	factoriesLabor := g.GetActiveFactoriesForPlanet(p)
+	switch p.special {
+	case PSPECIAL_ULTRA_POOR:
+		factoriesLabor = lib.DivideRoundingUp(50*factoriesLabor, 100)
+	case PSPECIAL_POOR:
+		factoriesLabor = lib.DivideRoundingUp(75*factoriesLabor, 100)
+	case PSPECIAL_RICH:
+		factoriesLabor = lib.DivideRoundingUp(125*factoriesLabor, 100)
+	case PSPECIAL_ULTRA_RICH:
+		factoriesLabor = lib.DivideRoundingUp(150*factoriesLabor, 100)
+	}
 	gross := handLabor + factoriesLabor
 	net := gross // TODO: taxes
 	return net, gross

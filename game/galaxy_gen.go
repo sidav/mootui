@@ -168,6 +168,8 @@ func placeOrionSystem(gs *galaxyStruct) {
 				s.Name = "Orion"
 				s.staticData = starsDataTable[0]
 				s.planet.planetType = PLANET_TYPE_GAIA
+				s.planet.growth = PGROWTH_GAIA
+				s.planet.special = PSPECIAL_ULTRA_RICH
 				s.planet.baseMaxPop = 150
 				return
 			}
