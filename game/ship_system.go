@@ -37,6 +37,8 @@ type ShipSystemStruct struct {
 	name            string
 	alwaysAvailable bool // true if no research required
 
+	cost int
+
 	maxTraveledDistance int
 
 	speedOnGlobalMap int
@@ -48,6 +50,7 @@ var ShipSystemsTable = map[sdsSlot][]*ShipSystemStruct{
 	SDSLOT_FUEL: {
 		{
 			name:                "Basic fuel cells",
+			cost:                10,
 			alwaysAvailable:     true,
 			maxTraveledDistance: 3,
 		},
@@ -55,6 +58,7 @@ var ShipSystemsTable = map[sdsSlot][]*ShipSystemStruct{
 	SDSLOT_PROPULSION: {
 		{
 			name:             "Nuclear engines",
+			cost:             10,
 			alwaysAvailable:  true,
 			speedOnGlobalMap: 1,
 		},
@@ -63,6 +67,7 @@ var ShipSystemsTable = map[sdsSlot][]*ShipSystemStruct{
 		{
 			name:            "Colony",
 			alwaysAvailable: true,
+			cost:            100,
 			uniqCode:        SSYSTEM_COLONY,
 		},
 	},

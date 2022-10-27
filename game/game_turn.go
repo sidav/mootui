@@ -14,9 +14,11 @@ func (g *Game) ProcessTurn() {
 	}
 	for _, star := range g.Galaxy.stars {
 		if star.GetPlanet().IsColonized() {
+			shipsBc := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_SHIP)
 			indBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_IND)
 			// ecoBC := g.GetPlanetBCForSlider(star.GetPlanet(), PSLIDER_ECO)
 
+			g.buildShips(star, shipsBc)
 			g.buildEco(star)
 			g.buildIndustry(star, indBC)
 
@@ -27,6 +29,19 @@ func (g *Game) ProcessTurn() {
 		g.PerformResearchForFaction(f)
 	}
 	g.moveFleets()
+}
+
+func (g *Game) buildShips(star *StarStruct, spentBc int) {
+	if spentBc == 0 {
+		return
+	}
+	p := star.planet
+	p.bcSpentOnShip += spentBc
+	shipCost := p.colonizedBy.shipsDesigns[p.CurrentBuiltShipDesignIndex].GetBcCost()
+	for p.bcSpentOnShip >= shipCost {
+		p.bcSpentOnShip -= shipCost
+		g.Galaxy.CreateOrAppendFleetWithShipOfDesign(star.X, star.Y, p.colonizedBy, p.CurrentBuiltShipDesignIndex)
+	}
 }
 
 func (g *Game) buildIndustry(star *StarStruct, spentBc int) {

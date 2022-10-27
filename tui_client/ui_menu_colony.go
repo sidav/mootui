@@ -38,6 +38,13 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), 0, line)
 		line++
 
+		io.putString(fmt.Sprintf("Built ship: %s",
+			currGame.GetPlayerFaction().GetDesignByIndex(planet.CurrentBuiltShipDesignIndex).Name),
+			0, line)
+		line++
+		io.putString("  (Press s to change)", 0, line)
+		line++
+
 		line++
 		// slider control menu
 		// scmStart := line
@@ -80,6 +87,11 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 			planet.ChangeSliderPercent(-1, cursorPos)
 		case "RIGHT":
 			planet.ChangeSliderPercent(+1, cursorPos)
+		case "s":
+			planet.CurrentBuiltShipDesignIndex = (planet.CurrentBuiltShipDesignIndex + 1) % game.SHIP_DESIGNS_PER_FACTION
+			for currGame.GetPlayerFaction().GetDesignByIndex(planet.CurrentBuiltShipDesignIndex) == nil {
+				planet.CurrentBuiltShipDesignIndex = (planet.CurrentBuiltShipDesignIndex + 1) % game.SHIP_DESIGNS_PER_FACTION
+			}
 		case "e":
 			planet.EqualizeSliders(false)
 		case " ":

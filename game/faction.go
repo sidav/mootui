@@ -22,6 +22,10 @@ type faction struct {
 	shipsDesigns [SHIP_DESIGNS_PER_FACTION]*shipDesign
 }
 
+func (f *faction) GetDesignByIndex(ind int) *shipDesign {
+	return f.shipsDesigns[ind]
+}
+
 func createFaction(colorName string) *faction {
 	f := &faction{colorName: colorName}
 	for cat := 0; cat < TECH_CATEGORIES; cat++ {

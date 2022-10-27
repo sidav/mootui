@@ -2,10 +2,27 @@ package game
 
 type shipDesign struct {
 	Name string
-	//Weapons        [4]int
+	// Weapons        [4]int
+	// Armor
+	// Shield
+	// Computer
 	Fuel           *ShipSystemStruct
 	Engine         *ShipSystemStruct
 	SpecialSystems [4]*ShipSystemStruct // holds indices
+}
+
+func (sd *shipDesign) GetBcCost() int {
+	cost := 0
+	// TODO: consider size
+	cost += sd.Fuel.cost
+	cost += sd.Engine.cost
+	for i := range sd.SpecialSystems {
+		if sd.SpecialSystems[i] != nil {
+			cost += sd.SpecialSystems[i].cost
+		}
+	}
+
+	return cost
 }
 
 func (sd *shipDesign) HasSpecialSystemWithCode(spec sdsUniqueCode) bool {

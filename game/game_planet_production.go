@@ -91,7 +91,17 @@ func (g *Game) GetNaturalGrowthForPlanet(p *planet) int {
 func (g *Game) GetSliderString(p *planet, snum int) string {
 	switch snum {
 	case PSLIDER_SHIP:
-		return "Not implemented"
+		spending := g.GetPlanetBCForSlider(p, PSLIDER_SHIP)
+		if spending == 0 {
+			return "None"
+		}
+		shipCost := p.colonizedBy.shipsDesigns[p.CurrentBuiltShipDesignIndex].GetBcCost()
+		if spending >= shipCost {
+			buildPer10Turns := 10*spending/shipCost
+			return fmt.Sprintf("%d.%d/turn", buildPer10Turns/10, buildPer10Turns%10)
+		} else {
+			return fmt.Sprintf("%d turns", lib.DivideRoundingUp(shipCost, spending))
+		}
 	case PSLIDER_DEF:
 		return "Not implemented"
 	case PSLIDER_IND:

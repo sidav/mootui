@@ -3,18 +3,22 @@ package game
 import "strconv"
 
 type planet struct {
-	colonizedBy            *faction
-	planetType             int
-	factories              int
-	currentFactoriesPerPop int // stored so that
-	bcSpentOnInd           int // remaining from previous turn, "unbuilt" factory, upgrade in progress etc
-	pop                    int
-	popTenths              int // it's "3" in "4.3 pop"
-	baseMaxPop             int
-	popGivenByTerraforming int
-	bcSpentOnTerraforming  int
-	special, growth        int
-	prodSliders            [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
+	colonizedBy *faction
+	planetType  int
+
+	// sliders-related
+	bcSpentOnShip               int
+	CurrentBuiltShipDesignIndex int
+	factories                   int
+	currentFactoriesPerPop      int // stored so that upgrading will work
+	bcSpentOnInd                int // remaining from previous turn, "unbuilt" factory, upgrade in progress etc
+	pop                         int
+	popTenths                   int // it's "3" in "4.3 pop"
+	baseMaxPop                  int
+	popGivenByTerraforming      int
+	bcSpentOnTerraforming       int
+	special, growth             int
+	prodSliders                 [TOTAL_PLANET_SLIDERS]prodSliderStruct // hold production values
 }
 
 func (p *planet) setColonyFor(f *faction) {
