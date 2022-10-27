@@ -47,7 +47,11 @@ func (ui *uiStruct) drawFleet(fleet *game.Fleet) {
 	onScreenX, onScreenY := ui.realCoordsToScreenCoords(fx, fy)
 	onScreenX += GALAXY_CELL_W-1
 	io.setStyle(colorStringToTcell(fleet.GetOwner().GetColorName()), tcell.ColorBlack)
-	io.putString(strconv.Itoa(fleet.GetTotalShipsNumber()), onScreenX, onScreenY)
+	fleetStr := strconv.Itoa(fleet.GetTotalShipsNumber())
+	if fleet.HasColonyShip() {
+		fleetStr += "C"
+	}
+	io.putString(fleetStr, onScreenX, onScreenY)
 }
 
 func (ui *uiStruct) drawStar(star *game.StarStruct) {

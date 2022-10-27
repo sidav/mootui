@@ -1,9 +1,9 @@
 package game
 
 type Fleet struct {
-	owner         *faction
-	x, y          int
-	destX, destY  int
+	owner        *faction
+	x, y         int
+	destX, destY int
 
 	shipsByDesign [SHIP_DESIGNS_PER_FACTION]int
 }
@@ -22,7 +22,6 @@ func (f *Fleet) HasColonyShip() bool {
 	}
 	return false
 }
-
 
 func (f *Fleet) spendColonyShip() {
 	for des := range f.shipsByDesign {
@@ -49,11 +48,27 @@ func (f *Fleet) GetTotalShipsNumber() int {
 }
 
 func (f *Fleet) GetMaxTravelingDistance() int {
-	return 5 // TODO: remove this stub
+	maxDist := 99999
+	for des := range f.shipsByDesign {
+		if f.shipsByDesign[des] > 0 {
+			if f.owner.shipsDesigns[des].Fuel.maxTraveledDistance < maxDist {
+				maxDist = f.owner.shipsDesigns[des].Fuel.maxTraveledDistance
+			}
+		}
+	}
+	return maxDist
 }
 
 func (f *Fleet) GetSpeed() int {
-	return 1 // TODO: remove this stub
+	minSpeed := 999999
+	for des := range f.shipsByDesign {
+		if f.shipsByDesign[des] > 0 {
+			if f.owner.shipsDesigns[des].Engine.speedOnGlobalMap < minSpeed {
+				minSpeed = f.owner.shipsDesigns[des].Engine.speedOnGlobalMap
+			}
+		}
+	}
+	return minSpeed
 }
 
 func (f *Fleet) GetOwner() *faction {
