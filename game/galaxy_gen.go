@@ -6,13 +6,14 @@ import (
 )
 
 func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
-	fmt.Println("Generating galaxy...")
+	fmt.Println("Generating galaxy:")
 	totalStars := desiredStarsCount // (w/5) * (h/5)
 	gs := &galaxyStruct{
 		W: w,
 		H: h,
 	}
 
+	fmt.Println("   Placing stars...")
 	for sn := 0; sn < totalStars; sn++ {
 		gs.stars = append(gs.stars, generateNewStar(gs))
 	}
@@ -23,12 +24,21 @@ func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
 		gs.factions = append(gs.factions, createFaction(FactionColors[i]))
 	}
 
+	fmt.Println("   Setting initial designs...")
+	for _, f := range gs.factions {
+		SetDefaultShipsDesignToFaction(f)
+	}
+
 	fmt.Println("   Placing homeworlds...")
 	for _, f := range gs.factions {
 		placeHomeworldForFaction(gs, f)
 	}
-	gs.factions[0].isPlayerControlled = true
+
+	fmt.Println("   Finding Orion...")
 	placeOrionSystem(gs)
+
+	fmt.Println("   Placing player...")
+	gs.factions[0].isPlayerControlled = true
 
 	return gs
 }
@@ -149,7 +159,9 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 		currIndex++
 	}
 	currStar.planet.setColonyFor(f)
-	g.CreateOrAppendFleetWithShip(currStar.X, currStar.Y, f)
+	g.CreateOrAppendFleetWithShipOfDesign(currStar.X, currStar.Y, f, 0)
+	g.CreateOrAppendFleetWithShipOfDesign(currStar.X, currStar.Y, f, 0)
+	g.CreateOrAppendFleetWithShipOfDesign(currStar.X, currStar.Y, f, 1)
 	currStar.planet.planetType = PLANET_TYPE_TERRAN
 	currStar.planet.growth = PGROWTH_NORMAL
 	currStar.planet.special = PSPECIAL_NORMAL

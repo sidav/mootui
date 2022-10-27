@@ -13,27 +13,39 @@ func (f *Fleet) ResetDestination() {
 }
 
 func (f *Fleet) HasColonyShip() bool {
-	// todo: implement
-	return true
+	for des := range f.shipsByDesign {
+		if f.shipsByDesign[des] > 0 {
+			if f.owner.shipsDesigns[des].HasSpecialSystemWithCode(SSYSTEM_COLONY) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 
 func (f *Fleet) spendColonyShip() {
-	// todo: implement
-	for i := range f.shipsByDesign {
-		if f.shipsByDesign[i] > 0 {
-			f.shipsByDesign[i]--
-			return
+	for des := range f.shipsByDesign {
+		if f.shipsByDesign[des] > 0 {
+			if f.owner.shipsDesigns[des].HasSpecialSystemWithCode(SSYSTEM_COLONY) {
+				f.shipsByDesign[des]--
+				return
+			}
 		}
 	}
+	panic("Nothing to spend!")
 }
 
 func (f *Fleet) IsUnderWay() bool {
 	return f.destX != f.x || f.destY != f.y
 }
 
-func (f *Fleet) GetShipsNumber() int {
-	return 3 // TODO: remove this stub
+func (f *Fleet) GetTotalShipsNumber() int {
+	sum := 0
+	for i := range f.shipsByDesign {
+		sum += f.shipsByDesign[i]
+	}
+	return sum
 }
 
 func (f *Fleet) GetMaxTravelingDistance() int {
