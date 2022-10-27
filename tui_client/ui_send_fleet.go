@@ -24,7 +24,7 @@ func (ui *uiStruct) sendFleetScreen(sentFleet *game.Fleet) {
 		ui.drawSidebarForCursorContents()
 		io.screen.Show()
 		keyPressed := io.readKey()
-		ui.handleControls(keyPressed)
+		ui.moveCursor(keyPressed)
 		if keyPressed == "ESCAPE" {
 			break
 		}

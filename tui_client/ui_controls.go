@@ -2,8 +2,7 @@ package tui_client
 
 func (ui *uiStruct) handleControls(keyPressed string) {
 	ui.moveCursor(keyPressed)
-	star := ui.getStarAtCursor()
-	if keyPressed == "ENTER" && star != nil && star.GetPlanet().IsColonized() {
+	if keyPressed == "ENTER" {
 		ui.selectEntityFromGalaxyScreen()
 	}
 	if keyPressed == "n" {
