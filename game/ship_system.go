@@ -30,6 +30,7 @@ func GetShipSystemByName(name string) *ShipSystemStruct {
 			}
 		}
 	}
+	// return nil
 	panic("System '" + name + "' not found!")
 }
 
@@ -50,9 +51,19 @@ var ShipSystemsTable = map[sdsSlot][]*ShipSystemStruct{
 	SDSLOT_FUEL: {
 		{
 			name:                "Basic fuel cells",
-			cost:                10,
+			cost:                20,
 			alwaysAvailable:     true,
 			maxTraveledDistance: 3,
+		},
+		{
+			name:                "Deuterium fuel cells",
+			cost:                25,
+			maxTraveledDistance: 4,
+		},
+		{
+			name:                "Antimatter fuel cells",
+			cost:                50,
+			maxTraveledDistance: 5,
 		},
 	},
 	SDSLOT_PROPULSION: {
@@ -61,6 +72,11 @@ var ShipSystemsTable = map[sdsSlot][]*ShipSystemStruct{
 			cost:             10,
 			alwaysAvailable:  true,
 			speedOnGlobalMap: 1,
+		},
+		{
+			name:             "Thermonuclear engines",
+			cost:             25,
+			speedOnGlobalMap: 2,
 		},
 	},
 	SDSLOT_SPECIAL: {
