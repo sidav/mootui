@@ -12,6 +12,22 @@ func (f *Fleet) ResetDestination() {
 	f.destX, f.destY = f.x, f.y
 }
 
+func (f *Fleet) HasColonyShip() bool {
+	// todo: implement
+	return true
+}
+
+
+func (f *Fleet) spendColonyShip() {
+	// todo: implement
+	for i := range f.shipsByDesign {
+		if f.shipsByDesign[i] > 0 {
+			f.shipsByDesign[i]--
+			return
+		}
+	}
+}
+
 func (f *Fleet) IsUnderWay() bool {
 	return f.destX != f.x || f.destY != f.y
 }

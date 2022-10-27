@@ -21,6 +21,7 @@ func (p *planet) setColonyFor(f *faction) {
 	p.setSlidersToInitialValues()
 	p.colonizedBy = f
 	p.currentFactoriesPerPop = f.getActiveFactoriesPerPop()
+	p.pop = 1
 }
 
 func (p *planet) GetMaxPop() int {

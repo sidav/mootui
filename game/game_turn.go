@@ -112,3 +112,17 @@ func (g *Game) moveFleets() {
 		}
 	}
 }
+
+func (g *Game) IsStarColonizableByFleet(star *StarStruct, f *Fleet) bool {
+	return star != nil && f.HasColonyShip() && !star.planet.IsColonized()
+}
+
+func (g *Game) OrderFleetToColonize(f *Fleet) {
+	x, y := f.GetCoords()
+	star := g.Galaxy.GetStarAt(x, y)
+	if !g.IsStarColonizableByFleet(star, f) {
+		panic("Broken colonize order requirements!")
+	}
+	f.spendColonyShip()
+	star.planet.setColonyFor(f.owner)
+}
