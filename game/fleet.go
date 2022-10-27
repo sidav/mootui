@@ -83,6 +83,6 @@ func (f *Fleet) GetTargetCoords() (int, int) {
 	return f.destX, f.destY
 }
 
-func (f *Fleet) SetTargetCoords(x, y int) {
+func (f *Fleet) setTargetCoords(x, y int) {
 	f.destX, f.destY = x, y
 }

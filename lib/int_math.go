@@ -1,6 +1,8 @@
 package lib
 
-import "math"
+import (
+	"math"
+)
 
 func PowInt(base, power int) int {
 	if power == 0 {

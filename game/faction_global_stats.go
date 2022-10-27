@@ -32,6 +32,6 @@ func (f *faction) getWasteRemovedFor1Bc() int {
 	return amount
 }
 
-func (f *faction) getVisionRange() int {
+func (f *faction) getSensorsRange() int {
 	return 3
 }

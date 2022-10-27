@@ -1,5 +1,9 @@
 package game
 
+import (
+	"moocli/graphic_primitives"
+)
+
 type galaxyStruct struct {
 	W, H     int
 	stars    []*StarStruct
@@ -22,6 +26,19 @@ func (gs *galaxyStruct) GetAllStars() []*StarStruct {
 
 func (gs *galaxyStruct) GetAllFleets() []*Fleet {
 	return gs.fleets
+}
+
+func (gs *galaxyStruct) GetDistanceToCoordsForEmpire(x, y int, e *faction) int {
+	dist := 9999999
+	for _, s := range gs.stars {
+		if s.planet.colonizedBy == e {
+			tDist := graphic_primitives.GetLineDist(s.X, s.Y, x, y)
+			if tDist < dist {
+				dist = tDist
+			}
+		}
+	}
+	return dist
 }
 
 func (gs *galaxyStruct) GetFleetsAt(x, y int) (result []*Fleet) {

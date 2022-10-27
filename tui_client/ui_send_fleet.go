@@ -28,8 +28,10 @@ func (ui *uiStruct) sendFleetScreen(sentFleet *game.Fleet) {
 		if keyPressed == "ESCAPE" {
 			break
 		}
-		if keyPressed == "ENTER" {
-			sentFleet.SetTargetCoords(ui.cursorX, ui.cursorY)
+		if keyPressed == "ENTER" &&
+			currGame.Galaxy.GetDistanceToCoordsForEmpire(ui.cursorX, ui.cursorY, currGame.GetPlayerFaction()) <= sentFleet.GetMaxTravelingDistance() {
+
+			currGame.SetFleetDestination(sentFleet, ui.cursorX, ui.cursorY)
 			break
 		}
 	}

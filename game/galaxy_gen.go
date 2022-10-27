@@ -2,7 +2,7 @@ package game
 
 import (
 	"fmt"
-	"moocli/lib"
+	"moocli/graphic_primitives"
 )
 
 func generateGalaxy(w, h, desiredStarsCount int) *galaxyStruct {
@@ -56,13 +56,13 @@ func generateNewStar(g *galaxyStruct) *StarStruct {
 		y = rnd.RandInRange(1, g.H-1)
 		if len(g.stars) > 0 {
 			lastStar := g.stars[len(g.stars)-1]
-			if lib.SqDistInt(x, y, lastStar.X, lastStar.Y) < minDistFromPrevStar*minDistFromPrevStar {
+			if graphic_primitives.GetLineDist(x, y, lastStar.X, lastStar.Y) < minDistFromPrevStar {
 				coordsSet = false
 				continue
 			}
 		}
 		for _, otherStar := range g.stars {
-			if lib.SqDistInt(x, y, otherStar.X, otherStar.Y) < minDistFromAnotherStar*minDistFromAnotherStar {
+			if graphic_primitives.GetLineDist(x, y, otherStar.X, otherStar.Y) < minDistFromAnotherStar {
 				coordsSet = false
 				continue
 			}
@@ -150,7 +150,7 @@ func placeHomeworldForFaction(g *galaxyStruct, f *faction) {
 		}
 		for _, otherStar := range g.stars {
 			if otherStar.planet.IsColonized() {
-				if lib.SqDistInt(currStar.X, currStar.Y, otherStar.X, otherStar.Y) < minDist*minDist {
+				if graphic_primitives.GetLineDist(currStar.X, currStar.Y, otherStar.X, otherStar.Y) < minDist {
 					selected = false
 					break
 				}

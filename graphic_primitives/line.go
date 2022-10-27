@@ -15,6 +15,46 @@ func abs(x int) int {
 	return x
 }
 
+func GetLineDist(fromx, fromy, tox, toy int) int {
+	dist := 0
+	deltax := abs(tox - fromx)
+	deltay := abs(toy - fromy)
+	xmod := 1
+	ymod := 1
+	if tox < fromx {
+		xmod = -1
+	}
+	if toy < fromy {
+		ymod = -1
+	}
+	error := 0
+	if deltax >= deltay {
+		y := fromy
+		deltaerr := deltay
+		for x := fromx; x != tox+xmod; x += xmod {
+			dist++
+			error += deltaerr
+			if 2*error >= deltax {
+				y += ymod
+				error -= deltax
+			}
+		}
+	} else {
+		x := fromx
+		deltaerr := deltax
+		for y := fromy; y != toy+ymod; y += ymod {
+			dist++
+			error += deltaerr
+			if 2*error >= deltay {
+				x += xmod
+				error -= deltay
+			}
+		}
+	}
+	return dist-1
+}
+
+
 func GetLine(fromx, fromy, tox, toy int) []Point {
 	line := make([]Point, 0)
 	deltax := abs(tox - fromx)
