@@ -1,5 +1,10 @@
 package game
 
+func (f *faction) getMaxTerraformingPopIncrease() int {
+	return f.currentCumulativeTech.terraformingPopAddition
+}
+
+
 func (f *faction) getFactoryCost() int {
 	cost := f.currentCumulativeTech.factoryConstructionCost
 	if cost == 0 {

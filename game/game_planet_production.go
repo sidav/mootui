@@ -34,7 +34,7 @@ func (g *Game) GetPlanetWasteRemoval(p *planet, gross bool) int {
 	if gross {
 		return ecoBc * p.colonizedBy.getWasteRemovedFor1Bc()
 	}
-	return lib.MinInt(ecoBc*2, g.GetPlanetWaste(p))
+	return lib.MinInt(ecoBc * p.colonizedBy.getWasteRemovedFor1Bc(), g.GetPlanetWaste(p))
 }
 
 func (g *Game) GetBcRequiredForPlanetWasteRemoval(p *planet) int {

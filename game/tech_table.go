@@ -63,7 +63,7 @@ var techTable = [TECH_CATEGORIES][]*techStruct{
 	{
 		{
 			Name:                    "Basic shields",
-			givesShipSystemWithName: "Basic shield",
+			// givesShipSystemWithName: "Basic shield",
 			alwaysAvailable:         true,
 		},
 		{

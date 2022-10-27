@@ -53,7 +53,7 @@ func (p *planet) GetPopulationStrings() (string, string) {
 }
 
 func (p *planet) canBeTerraformed() bool {
-	return p.popGivenByTerraforming < p.colonizedBy.currentCumulativeTech.terraformingPopAddition
+	return p.popGivenByTerraforming < p.colonizedBy.getMaxTerraformingPopIncrease()
 }
 
 func (p *planet) factoriesUpgradeNeeded() bool {
