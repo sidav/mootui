@@ -1,14 +1,19 @@
 package game
 
 type shipDesign struct {
-	Name string
-	// Weapons        [4]int
-	// Armor
-	// Shield
-	// Computer
+	Name           string
+	Weapons        [4]weaponInstallation
+	Armor          *ShipSystemStruct
+	Shield         *ShipSystemStruct
+	Computer       *ShipSystemStruct
 	Fuel           *ShipSystemStruct
 	Engine         *ShipSystemStruct
 	SpecialSystems [4]*ShipSystemStruct // holds indices
+}
+
+type weaponInstallation struct {
+	weapon *ShipSystemStruct
+	count  int
 }
 
 func (sd *shipDesign) GetBcCost() int {
