@@ -21,7 +21,7 @@ func (ui *uiStruct) sendFleetScreen(sentFleet *game.Fleet) {
 		}
 		ui.DrawGalaxy()
 		ui.drawSendFleetCursor()
-		ui.drawSidebarForCursorContents()
+		ui.drawSidebarForCursorContents(sentFleet)
 		io.screen.Show()
 		keyPressed := io.readKey()
 		ui.moveCursor(keyPressed)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"math"
+	"moocli/game"
 )
 
 func (ui *uiStruct) renderSlider(x, y, w int, textOnLeft string,
@@ -85,7 +86,7 @@ func (ui *uiStruct) drawSendFleetCursor() {
 	io.putChar('\\', osx+cursorW, osy+2)
 }
 
-func (ui *uiStruct) drawSidebarForCursorContents() {
+func (ui *uiStruct) drawSidebarForCursorContents(selectedFleet *game.Fleet) {
 	cw, ch := io.getConsoleSize()
 	io.drawFilledRect(' ', cw-SIDEBAR_W, 0, SIDEBAR_W, ch-1)
 	io.setStyle(tcell.ColorBlue, tcell.ColorBlue)
@@ -134,4 +135,22 @@ func (ui *uiStruct) drawSidebarForCursorContents() {
 		io.putString(fmt.Sprintf("MAX POP %s", mp), linesx, liney)
 	}
 	liney++
+	if selectedFleet != nil {
+		distFromEmpire := currGame.Galaxy.GetDistanceToCoordsForEmpire(ui.cursorX, ui.cursorY, currGame.GetPlayerFaction())
+		if selectedFleet.GetMaxTravelingDistance() >= distFromEmpire {
+			io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
+		} else {
+			io.setStyle(tcell.ColorRed, tcell.ColorBlack)
+		}
+		io.putString(fmt.Sprintf("%d parsecs",
+			currGame.Galaxy.GetDistanceToCoordsForEmpire(ui.cursorX, ui.cursorY, currGame.GetPlayerFaction())), linesx, liney)
+		liney++
+		if selectedFleet.GetMaxTravelingDistance() >= distFromEmpire {
+			io.putString(fmt.Sprintf("ETA %d turns",
+				currGame.GetETAForFleetToCoords(selectedFleet, ui.cursorX, ui.cursorY)), linesx, liney)
+		} else {
+			io.putString("NOT ENOUGH FUEL", linesx, liney)
+		}
+		liney++
+	}
 }

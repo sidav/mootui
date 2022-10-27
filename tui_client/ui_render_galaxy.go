@@ -15,7 +15,7 @@ func (ui *uiStruct) galaxyScreen() {
 	io.clearScreen()
 	ui.DrawGalaxy()
 	ui.drawSelectCursor()
-	ui.drawSidebarForCursorContents()
+	ui.drawSidebarForCursorContents(nil)
 	io.screen.Show()
 }
 

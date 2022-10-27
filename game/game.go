@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"moocli/fibrandom"
+	"moocli/graphic_primitives"
 )
 
 var rnd fibrandom.FibRandom
@@ -28,4 +29,8 @@ func InitNewGame() *Game {
 	gam.Galaxy = generateGalaxy(32, 20, 36)
 	fmt.Println("Game init finished.")
 	return &gam
+}
+
+func Distance(fx, fy, tx, ty int) int {
+	return graphic_primitives.GetLineDist(fx, fy, tx, ty)
 }
