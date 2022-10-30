@@ -29,13 +29,14 @@ func GetTechCategoryName(cat int) string {
 }
 
 type techStruct struct {
-	Name                    string
-	Description             string
-	wasteRemovedPerCost     int
-	factoryConstructionCost int
-	factoriesPerPopulation  int
-	terraformingPopAddition int
-	givesShipSystemWithName string
-	alwaysAvailable         bool
-	unused                  bool
+	Name                        string
+	Description                 string
+	wasteRemovedPerCost         int
+	factoryConstructionCost     int
+	factoriesPerPopulation      int
+	terraformingPopAddition     int
+	givesShipSystemFromCategory int
+	givesShipSystemWithName     string
+	alwaysAvailable             bool
+	unused                      bool
 }

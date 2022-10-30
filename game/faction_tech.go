@@ -62,3 +62,21 @@ func (f *faction) applyNewTech(cat, id int) {
 		f.currentCumulativeTech.terraformingPopAddition = tech.terraformingPopAddition
 	}
 }
+
+func (f *faction) GetListOfAvailableShipSystemsInCategory(cat int) (systems []*ShipSystemStruct) {
+	// add "always available" ones
+	for _, s := range ShipSystemsTable[sdsSlot(cat)] {
+		if s.alwaysAvailable {
+			systems = append(systems, s)
+		}
+	}
+	for rcat := range f.hasTech {
+		for tIndex := range f.hasTech[rcat] {
+			t := GetTechByCatAndId(rcat, tIndex)
+			if t.givesShipSystemFromCategory == cat && t.givesShipSystemWithName != "" {
+				systems = append(systems, GetShipSystemByName(t.givesShipSystemWithName))
+			}
+		}
+	}
+	return
+}

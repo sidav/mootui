@@ -51,8 +51,8 @@ func (f *Fleet) GetMaxTravelingDistance() int {
 	maxDist := 99999
 	for des := range f.shipsByDesign {
 		if f.shipsByDesign[des] > 0 {
-			if f.owner.shipsDesigns[des].Fuel.maxTraveledDistance < maxDist {
-				maxDist = f.owner.shipsDesigns[des].Fuel.maxTraveledDistance
+			if f.owner.shipsDesigns[des].Systems[SDSLOT_FUEL].maxTraveledDistance < maxDist {
+				maxDist = f.owner.shipsDesigns[des].Systems[SDSLOT_FUEL].maxTraveledDistance
 			}
 		}
 	}
@@ -63,8 +63,8 @@ func (f *Fleet) GetSpeed() int {
 	minSpeed := 999999
 	for des := range f.shipsByDesign {
 		if f.shipsByDesign[des] > 0 {
-			if f.owner.shipsDesigns[des].Engine.speedOnGlobalMap < minSpeed {
-				minSpeed = f.owner.shipsDesigns[des].Engine.speedOnGlobalMap
+			if f.owner.shipsDesigns[des].Systems[SDSLOT_PROPULSION].speedOnGlobalMap < minSpeed {
+				minSpeed = f.owner.shipsDesigns[des].Systems[SDSLOT_PROPULSION].speedOnGlobalMap
 			}
 		}
 	}

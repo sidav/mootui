@@ -1,12 +1,16 @@
 package tui_client
 
-func (ui *uiStruct) handleControls(keyPressed string) {
+func (ui *uiStruct) handleGalaxyScreenControls(keyPressed string) {
 	ui.moveCursor(keyPressed)
 	if keyPressed == "ENTER" {
 		ui.selectEntityFromGalaxyScreen()
 	}
 	if keyPressed == "n" {
 		currGame.ProcessTurn()
+		ui.turnEnded = true
+	}
+	if keyPressed == "f" {
+		ui.SelectDesignToChange()
 		ui.turnEnded = true
 	}
 }

@@ -1,26 +1,67 @@
 package game
 
-type shipDesign struct {
+const (
+	SSIZE_SMALL = iota
+	SSIZE_MEDIUM
+	SSIZE_LARGE
+	SSIZE_GIANT
+	SSIZES_COUNT
+)
+
+type ShipDesign struct {
 	Name           string
-	Weapons        [4]weaponInstallation
-	Armor          *ShipSystemStruct
-	Shield         *ShipSystemStruct
-	Computer       *ShipSystemStruct
-	Fuel           *ShipSystemStruct
-	Engine         *ShipSystemStruct
+	Size           int
+	Weapons        [4]*WeaponInstallation
+	Systems        [SDSLOT_COUNT]*ShipSystemStruct
 	SpecialSystems [4]*ShipSystemStruct // holds indices
 }
 
-type weaponInstallation struct {
-	weapon *ShipSystemStruct
-	count  int
+type WeaponInstallation struct {
+	Weapon *ShipSystemStruct
+	Count  int
 }
 
-func (sd *shipDesign) GetBcCost() int {
+func (sd *ShipDesign) GetTotalSpace() int {
+	switch sd.Size {
+	case SSIZE_SMALL:
+		return 100
+	case SSIZE_MEDIUM:
+		return 150
+	case SSIZE_LARGE:
+		return 250
+	case SSIZE_GIANT:
+		return 400
+	}
+	return 0
+}
+
+func GetShipSizeName(size int) string {
+	switch size {
+	case SSIZE_SMALL:
+		return "Small"
+	case SSIZE_MEDIUM:
+		return "Medium"
+	case SSIZE_LARGE:
+		return "Large"
+	case SSIZE_GIANT:
+		return "Giant"
+	}
+	panic("No such ship size!")
+}
+
+func (sd *ShipDesign) GetBcCost() int {
 	cost := 0
 	// TODO: consider size
-	cost += sd.Fuel.cost
-	cost += sd.Engine.cost
+	for i := range sd.Systems {
+		if sd.Systems[i] != nil {
+			cost += sd.Systems[i].cost
+		}
+	}
+	for i := range sd.Weapons {
+		if sd.Weapons[i].Weapon != nil {
+			cost += sd.Weapons[i].Weapon.cost
+		}
+	}
 	for i := range sd.SpecialSystems {
 		if sd.SpecialSystems[i] != nil {
 			cost += sd.SpecialSystems[i].cost
@@ -30,7 +71,7 @@ func (sd *shipDesign) GetBcCost() int {
 	return cost
 }
 
-func (sd *shipDesign) HasSpecialSystemWithCode(spec sdsUniqueCode) bool {
+func (sd *ShipDesign) HasSpecialSystemWithCode(spec sdsUniqueCode) bool {
 	for sys := range sd.SpecialSystems {
 		if sd.SpecialSystems[sys] != nil && sd.SpecialSystems[sys].uniqCode == spec {
 			return true
@@ -40,15 +81,19 @@ func (sd *shipDesign) HasSpecialSystemWithCode(spec sdsUniqueCode) bool {
 }
 
 func SetDefaultShipsDesignToFaction(f *faction) {
-	f.shipsDesigns[0] = &shipDesign{
+	f.shipsDesigns[0] = &ShipDesign{
 		Name:   "Scout",
-		Fuel:   GetShipSystemByName("Basic fuel cells"),
-		Engine: GetShipSystemByName("Nuclear engines"),
+		Systems: [SDSLOT_COUNT]*ShipSystemStruct{
+			SDSLOT_FUEL: GetShipSystemByName("Basic fuel cells"),
+			SDSLOT_PROPULSION: GetShipSystemByName("Nuclear engines"),
+		},
 	}
-	f.shipsDesigns[1] = &shipDesign{
+	f.shipsDesigns[1] = &ShipDesign{
 		Name:           "Colony ship",
-		Fuel:           GetShipSystemByName("Basic fuel cells"),
-		Engine:         GetShipSystemByName("Nuclear engines"),
-		SpecialSystems: [4]*ShipSystemStruct{GetShipSystemByName("Colony"), nil, nil, nil},
+		Systems: [SDSLOT_COUNT]*ShipSystemStruct{
+			SDSLOT_FUEL: GetShipSystemByName("Basic fuel cells"),
+			SDSLOT_PROPULSION: GetShipSystemByName("Nuclear engines"),
+		},
+		SpecialSystems: [4]*ShipSystemStruct{0: GetShipSystemByName("Colony")},
 	}
 }

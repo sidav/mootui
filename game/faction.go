@@ -19,10 +19,10 @@ type faction struct {
 
 	notificationsForThisTurn []*notificationStruct
 
-	shipsDesigns [SHIP_DESIGNS_PER_FACTION]*shipDesign
+	shipsDesigns [SHIP_DESIGNS_PER_FACTION]*ShipDesign
 }
 
-func (f *faction) GetDesignByIndex(ind int) *shipDesign {
+func (f *faction) GetDesignByIndex(ind int) *ShipDesign {
 	return f.shipsDesigns[ind]
 }
 

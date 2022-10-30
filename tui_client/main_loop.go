@@ -36,7 +36,7 @@ func StartGame() {
 			currUi.centerScreenAroundCursorCoords()
 			currUi.galaxyScreen()
 			key := io.readKey()
-			currUi.handleControls(key)
+			currUi.handleGalaxyScreenControls(key)
 
 			gameShouldExit = key == "EXIT"
 			if gameShouldExit {
