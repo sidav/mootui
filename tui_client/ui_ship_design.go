@@ -42,7 +42,6 @@ func (ui *uiStruct) SelectDesignToChange() {
 			cursorPos++
 		case "ENTER":
 			ui.ChangeDesignNumber(cursorPos)
-			return
 		}
 	}
 }
@@ -52,6 +51,8 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 	var des game.ShipDesign
 	if initialDesign != nil {
 		des = *(initialDesign)
+	} else {
+		des.Name = "DESIGN " + strconv.Itoa(num)
 	}
 
 	menuStrings := ui.GetStringsArrayForShipDesign(&des)
@@ -61,7 +62,7 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 		line := 0
 		io.clearScreen()
 		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
-		io.drawStringCenteredAround("Changing design", cw/2, line)
+		io.drawStringCenteredAround("Changing design " + des.Name, cw/2, line)
 		line++
 		line++
 		for i := range menuStrings {
@@ -121,6 +122,9 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 				des.SpecialSystems[specSysSlot] = ui.selectShipSystemForSlot(int(game.SDSLOT_SPECIAL))
 			}
 			menuStrings = ui.GetStringsArrayForShipDesign(&des)
+		case "s":
+			currGame.GetPlayerFaction().SetDesignByIndex(&des, num)
+			return
 		}
 	}
 }

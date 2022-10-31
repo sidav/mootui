@@ -26,6 +26,10 @@ func (f *faction) GetDesignByIndex(ind int) *ShipDesign {
 	return f.shipsDesigns[ind]
 }
 
+func (f *faction) SetDesignByIndex(d *ShipDesign, ind int) {
+	f.shipsDesigns[ind] = d
+}
+
 func createFaction(colorName string) *faction {
 	f := &faction{colorName: colorName}
 	for cat := 0; cat < TECH_CATEGORIES; cat++ {
