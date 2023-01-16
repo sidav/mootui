@@ -35,6 +35,26 @@ func (sd *ShipDesign) GetTotalSpace() int {
 	return 0
 }
 
+func (sd *ShipDesign) GetUsedSpace() int {
+	space := 0
+	for _, w := range sd.Weapons {
+		if w != nil {
+			space += w.Weapon.GetSize(sd.GetTotalSpace()) * w.Count
+		}
+	}
+	for _, w := range sd.Systems {
+		if w != nil {
+			space += w.GetSize(sd.GetTotalSpace())
+		}
+	}
+	for _, w := range sd.SpecialSystems {
+		if w != nil {
+			space += w.GetSize(sd.GetTotalSpace())
+		}
+	}
+	return space
+}
+
 func GetShipSizeName(size int) string {
 	switch size {
 	case SSIZE_SMALL:
@@ -58,7 +78,7 @@ func (sd *ShipDesign) GetBcCost() int {
 		}
 	}
 	for i := range sd.Weapons {
-		if sd.Weapons[i].Weapon != nil {
+		if sd.Weapons[i] != nil && sd.Weapons[i].Weapon != nil {
 			cost += sd.Weapons[i].Weapon.cost
 		}
 	}

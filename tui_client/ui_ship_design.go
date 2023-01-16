@@ -65,6 +65,12 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 		io.drawStringCenteredAround("Changing design " + des.Name, cw/2, line)
 		line++
 		line++
+		sizeNotExceeded := des.GetUsedSpace() <= des.GetTotalSpace()
+		if !sizeNotExceeded {
+			io.setStyle(tcell.ColorRed, tcell.ColorBlack)
+		}
+		io.putString(fmt.Sprintf("Size: %d/%d ", des.GetUsedSpace(), des.GetTotalSpace()), 1, line)
+		line++
 		for i := range menuStrings {
 			if i == cursorPos {
 				io.setStyle(tcell.ColorBlack, tcell.ColorBeige)
@@ -123,8 +129,10 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 			}
 			menuStrings = ui.GetStringsArrayForShipDesign(&des)
 		case "s":
-			currGame.GetPlayerFaction().SetDesignByIndex(&des, num)
-			return
+			if sizeNotExceeded {
+				currGame.GetPlayerFaction().SetDesignByIndex(&des, num)
+				return
+			}
 		}
 	}
 }
