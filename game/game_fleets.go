@@ -13,6 +13,22 @@ func (g *Game) GetETAForFleetToCoords(f *Fleet, x, y int) int {
 	return lib.DivideRoundingUp(Distance(f.x, f.y, x, y), f.GetSpeed())
 }
 
+func (g *Game) SplitFleet(f *Fleet, newFleetCounts []int) {
+	f2 := Fleet{
+		owner:         f.owner,
+		x:             f.x,
+		y:             f.y,
+		shipsByDesign: [6]int{},
+	}
+	for i := range f.shipsByDesign {
+		f.shipsByDesign[i] -= newFleetCounts[i]
+		f2.shipsByDesign[i] += newFleetCounts[i]
+		if f.shipsByDesign[i] < 0 {
+			panic("Wrong fleet split!")
+		}
+	}
+}
+
 func (g *Game) MergeFleets(f1 *Fleet, f2 *Fleet) {
 	if f1.owner != f2.owner {
 		panic("Merging fleets of different factions")
