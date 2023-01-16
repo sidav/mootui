@@ -27,7 +27,7 @@ func (ui *uiStruct) SelectDesignToChange() {
 			if des == nil {
 				io.putString("[NEW DESIGN]", 1, line)
 			} else {
-				io.putString(des.Name, 1, line)
+				io.putString(des.GetName(), 1, line)
 			}
 			line++
 		}
@@ -52,7 +52,7 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 	if initialDesign != nil {
 		des = *(initialDesign)
 	} else {
-		des.Name = "DESIGN " + strconv.Itoa(num)
+		des.SetName("DESIGN " + strconv.Itoa(num))
 	}
 
 	menuStrings := ui.GetStringsArrayForShipDesign(&des)
@@ -62,7 +62,7 @@ func (ui *uiStruct) ChangeDesignNumber(num int) {
 		line := 0
 		io.clearScreen()
 		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
-		io.drawStringCenteredAround("Changing design " + des.Name, cw/2, line)
+		io.drawStringCenteredAround("Changing design " + des.GetName(), cw/2, line)
 		line++
 		line++
 		sizeNotExceeded := des.GetUsedSpace() <= des.GetTotalSpace()

@@ -39,7 +39,7 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 		line++
 
 		io.putString(fmt.Sprintf("Built ship: %s",
-			currGame.GetPlayerFaction().GetDesignByIndex(planet.CurrentBuiltShipDesignIndex).Name),
+			currGame.GetPlayerFaction().GetDesignByIndex(planet.CurrentBuiltShipDesignIndex).GetName()),
 			0, line)
 		line++
 		io.putString("  (Press s to change)", 0, line)

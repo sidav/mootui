@@ -55,6 +55,15 @@ func (gs *galaxyStruct) GetFleetOfFactionAt(x, y int, fact *faction) *Fleet {
 	return nil
 }
 
+func (gs *galaxyStruct) removeFleet(f *Fleet) {
+	for i, f2 := range gs.fleets {
+		if f == f2 {
+			gs.fleets = append(gs.fleets[:i], gs.fleets[i+1:]...)
+			return
+		}
+	}
+}
+
 func (gs *galaxyStruct) CreateOrAppendFleetWithShipOfDesign(x, y int, shipFaction *faction, designNumber int) {
 	fleetToAppend := gs.GetFleetOfFactionAt(x, y, shipFaction)
 	if fleetToAppend == nil {

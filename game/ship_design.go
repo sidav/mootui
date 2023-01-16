@@ -1,5 +1,9 @@
 package game
 
+import (
+	"fmt"
+)
+
 const (
 	SSIZE_SMALL = iota
 	SSIZE_MEDIUM
@@ -9,7 +13,8 @@ const (
 )
 
 type ShipDesign struct {
-	Name           string
+	name           string
+	Mark           int // mk1, mk2 etc
 	Size           int
 	Weapons        [4]*WeaponInstallation
 	Systems        [SDSLOT_COUNT]*ShipSystemStruct
@@ -19,6 +24,35 @@ type ShipDesign struct {
 type WeaponInstallation struct {
 	Weapon *ShipSystemStruct
 	Count  int
+}
+
+func (sd *ShipDesign) increaseMark() {
+	sd.Mark++
+}
+
+func (sd *ShipDesign) SetName(n string) {
+	sd.name = n
+}
+
+func (sd *ShipDesign) GetName() string {
+	markString := ""
+	switch sd.Mark {
+	case 0, 1:
+		break
+	case 2:
+		markString = " mk.II"
+	case 3:
+		markString = " mk.III"
+	case 4:
+		markString = " mk.IV"
+	case 5:
+		markString = " mk.V"
+	case 6:
+		markString = " mk.VI"
+	default:
+		markString = fmt.Sprintf(" mk.%d", sd.Mark)
+	}
+	return sd.name + markString
 }
 
 func (sd *ShipDesign) GetTotalSpace() int {
@@ -102,16 +136,16 @@ func (sd *ShipDesign) HasSpecialSystemWithCode(spec sdsUniqueCode) bool {
 
 func SetDefaultShipsDesignToFaction(f *faction) {
 	f.shipsDesigns[0] = &ShipDesign{
-		Name:   "Scout",
+		name: "Scout",
 		Systems: [SDSLOT_COUNT]*ShipSystemStruct{
-			SDSLOT_FUEL: GetShipSystemByName("Basic fuel cells"),
+			SDSLOT_FUEL:       GetShipSystemByName("Basic fuel cells"),
 			SDSLOT_PROPULSION: GetShipSystemByName("Nuclear engines"),
 		},
 	}
 	f.shipsDesigns[1] = &ShipDesign{
-		Name:           "Colony ship",
+		name: "Colony ship",
 		Systems: [SDSLOT_COUNT]*ShipSystemStruct{
-			SDSLOT_FUEL: GetShipSystemByName("Basic fuel cells"),
+			SDSLOT_FUEL:       GetShipSystemByName("Basic fuel cells"),
 			SDSLOT_PROPULSION: GetShipSystemByName("Nuclear engines"),
 		},
 		SpecialSystems: [4]*ShipSystemStruct{0: GetShipSystemByName("Colony")},

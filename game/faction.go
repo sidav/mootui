@@ -28,6 +28,7 @@ func (f *faction) GetDesignByIndex(ind int) *ShipDesign {
 
 func (f *faction) SetDesignByIndex(d *ShipDesign, ind int) {
 	f.shipsDesigns[ind] = d
+	f.shipsDesigns[ind].increaseMark()
 }
 
 func createFaction(colorName string) *faction {
