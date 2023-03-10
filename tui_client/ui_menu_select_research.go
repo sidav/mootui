@@ -20,7 +20,7 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 		line := 0
 		io.clearScreen()
 		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
-		io.drawStringCenteredAround("SELECT NEW " + strings.ToUpper(game.GetTechCategoryName(category)) + " RESEARCH",
+		io.drawStringCenteredAround("SELECT NEW "+strings.ToUpper(game.GetTechCategoryName(category))+" RESEARCH",
 			cw/2, line)
 		line++
 		line++
@@ -42,8 +42,14 @@ func (ui *uiStruct) showSelectResearchMenu(category int) {
 			menuActive = false
 		case "UP":
 			cursorPos--
+			if cursorPos < 0 {
+				cursorPos = len(techIds) - 1
+			}
 		case "DOWN":
 			cursorPos++
+			if cursorPos > len(techIds) - 1 {
+				cursorPos = 0
+			}
 		case "ENTER":
 			pFact.CurrentResearchingTech[category] = techIds[cursorPos]
 			return // TODO: set tech here

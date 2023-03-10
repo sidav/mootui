@@ -13,39 +13,31 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 	cursorPos := 0
 	menuActive := true
 	for menuActive {
-
+		io.currentUiLine = 0
 		io.setStyle(tcell.ColorBlack, tcell.ColorBlack)
 		io.drawFilledRect(' ', 0, 0, cw, ch)
 
-		line := 0
 		io.setStyle(colorStringToTcell(star.GetStarTypeName()), tcell.ColorBlack)
-		io.putString(star.Name+" - "+star.GetStarTypeName()+" star", 0, line)
-		line++
+		io.putStringAndIncrementLine(star.Name+" - "+star.GetStarTypeName()+" star", 0)
 		io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
-		//io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetPlanetTypeName()), 0, line)
+		//io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetPlanetTypeName()), 0)
 		//line++
-		io.putString(fmt.Sprintf("Colony on %s planet:", planet.GetGrowthAndSpecialString()), 0, line)
-		line++
+		io.putStringAndIncrementLine(fmt.Sprintf("Colony on %s planet:", planet.GetGrowthAndSpecialString()), 0)
 		pop, maxPop := planet.GetPopulationStrings()
-		io.putString(fmt.Sprintf("Pop. %s/%s bln.", pop, maxPop), 0, line)
-		line++
-		io.putString(fmt.Sprintf("Fcts. %d/%d Waste +%d/-%d", planet.GetFactories(),
+		io.putStringAndIncrementLine(fmt.Sprintf("Pop. %s/%s bln.", pop, maxPop), 0)
+		io.putStringAndIncrementLine(fmt.Sprintf("Fcts. %d/%d Waste +%d/-%d", planet.GetFactories(),
 			currGame.GetMaxFactoriesForPlanet(planet),
 			currGame.GetPlanetWaste(planet), currGame.GetPlanetWasteRemoval(planet, true)),
-			0, line)
-		line++
+			0)
 		net, gross := currGame.GetPlanetProductionNetGross(star.GetPlanet())
-		io.putString(fmt.Sprintf("Prod. %d (%d)", net, gross), 0, line)
-		line++
+		io.putStringAndIncrementLine(fmt.Sprintf("Prod. %d (%d)", net, gross), 0)
 
-		io.putString(fmt.Sprintf("Built ship: %s",
+		io.putStringAndIncrementLine(fmt.Sprintf("Built ship: %s",
 			currGame.GetPlayerFaction().GetDesignByIndex(planet.CurrentBuiltShipDesignIndex).GetName()),
-			0, line)
-		line++
-		io.putString("  (Press s to change)", 0, line)
-		line++
+			0)
+		io.putStringAndIncrementLine("  (Press s to change)", 0)
+		io.currentUiLine++
 
-		line++
 		// slider control menu
 		// scmStart := line
 		for i := 0; i < game.TOTAL_PLANET_SLIDERS; i++ {
@@ -60,19 +52,18 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 			} else {
 				io.setStyle(sliderTextColor, tcell.ColorBlack)
 			}
-			ui.renderSlider(0, line, cw,
+			ui.renderSlider(0, io.currentUiLine, cw,
 				game.GetSliderName(i),
 				planet.GetSliderPercent(i), 100,
 				fmt.Sprintf("%d%% (%dBC)", planet.GetSliderPercent(i), currGame.GetPlanetBCForSlider(planet, i)),
 				sliderFillColor, tcell.ColorGray,
 				currGame.GetSliderString(planet, i))
-			line++
+			io.currentUiLine++
 		}
 		io.resetStyle()
-		io.putString("Press SPACE to (un)lock slider", 0, line)
-		line++
-		io.putString("Press E to equalize sliders", 0, line)
-		line++
+		io.currentUiLine++
+		io.putStringAndIncrementLine("Press SPACE to (un)lock slider", 0)
+		io.putStringAndIncrementLine("Press E to equalize sliders", 0)
 
 		io.screen.Show()
 		key := io.readKey()
@@ -81,8 +72,14 @@ func (ui *uiStruct) colonyMenu(star *game.StarStruct) {
 			menuActive = false
 		case "UP":
 			cursorPos--
+			if cursorPos < 0 {
+				cursorPos = 4
+			}
 		case "DOWN":
 			cursorPos++
+			if cursorPos > 4 {
+				cursorPos = 0
+			}
 		case "LEFT":
 			planet.ChangeSliderPercent(-1, cursorPos)
 		case "RIGHT":

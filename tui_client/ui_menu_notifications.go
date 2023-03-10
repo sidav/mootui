@@ -13,19 +13,15 @@ func (ui *uiStruct) showThisTurnNotifications() {
 	menuActive := true
 	cw, _ := io.getConsoleSize()
 	for menuActive {
-		line := 0
 		io.clearScreen()
 		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
-		io.drawStringCenteredAround("EVENTS:", cw/2, line)
-		line++
-		line++
+		io.putStringAndIncrementLine("EVENTS:", cw/2)
+		io.currentUiLine++
 		for i := range nots {
 			io.setStyle(tcell.ColorYellow, tcell.ColorBlack)
-			io.putString(strings.ToUpper(nots[i].Header) + ":", 0, line)
-			line++
+			io.putStringAndIncrementLine(strings.ToUpper(nots[i].Header) + ":", 0)
 			io.setStyle(tcell.ColorWhite, tcell.ColorBlack)
-			io.putString(nots[i].Text, 2, line)
-			line++
+			io.putStringAndIncrementLine(nots[i].Text, 2)
 		}
 		io.screen.Show()
 		key := io.readKey()

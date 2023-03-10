@@ -86,3 +86,7 @@ func (f *Fleet) GetTargetCoords() (int, int) {
 func (f *Fleet) setTargetCoords(x, y int) {
 	f.destX, f.destY = x, y
 }
+
+func (f *Fleet) GetShipsByDesign() *[SHIP_DESIGNS_PER_FACTION]int {
+	return &f.shipsByDesign
+}

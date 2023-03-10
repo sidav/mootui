@@ -1,6 +1,7 @@
 package tui_client
 
 import (
+	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"moocli/game"
 	"strconv"
@@ -38,21 +39,17 @@ func (ui *uiStruct) selectEntityFromGalaxyScreen() {
 		menuStrs = append(menuStrs, "Fleet "+strconv.Itoa(i+1))
 	}
 	for {
-		line := 0
 		io.clearScreen()
 		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
-		io.drawStringCenteredAround("WHAT SHOULD BE ORDERED?",
-			cw/2, line)
-		line++
-		line++
+		io.drawStringCenteredAndIncrementLine("WHAT SHOULD BE ORDERED?", cw/2)
+		io.currentUiLine++
 		for i, s := range menuStrs {
 			if i == cursorPos {
 				io.setStyle(tcell.ColorBlack, tcell.ColorBeige)
 			} else {
 				io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
 			}
-			io.putString(s, 1, line)
-			line++
+			io.putStringAndIncrementLine(s, 1)
 		}
 		io.screen.Show()
 		key := io.readKey()
@@ -61,8 +58,14 @@ func (ui *uiStruct) selectEntityFromGalaxyScreen() {
 			return
 		case "UP":
 			cursorPos--
+			if cursorPos < 0 {
+				cursorPos = len(menuStrs) - 1
+			}
 		case "DOWN":
 			cursorPos++
+			if cursorPos > len(menuStrs) - 1 {
+				cursorPos = 0
+			}
 		case "ENTER":
 			if starHere != nil {
 				if cursorPos == 0 {
@@ -80,6 +83,7 @@ func (ui *uiStruct) selectEntityFromGalaxyScreen() {
 
 func (ui *uiStruct) selectOrderForFleet(f *game.Fleet) {
 	cw, _ := io.getConsoleSize()
+
 	menuStrs := []string{
 		"Colonize",
 		"Move",
@@ -87,25 +91,31 @@ func (ui *uiStruct) selectOrderForFleet(f *game.Fleet) {
 	}
 	cursorPos := 0
 	star := ui.getStarAtCursor()
-	if !currGame.IsStarColonizableByFleet(star, f) {
-		cursorPos++
-	}
 	for {
-		line := 0
+		if cursorPos == 0 && !currGame.IsStarColonizableByFleet(star, f) {
+			cursorPos++
+		}
 		io.clearScreen()
 		io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
-		io.drawStringCenteredAround("WHAT SHOULD BE ORDERED?",
-			cw/2, line)
-		line++
-		line++
+		io.drawStringCenteredAndIncrementLine("ORDER FLEET", cw/2)
+		ships := f.GetShipsByDesign()
+		io.putStringAndIncrementLine(fmt.Sprintf("Current fleet (%d ships total):", f.GetTotalShipsNumber()), 0)
+		for designIndex, count := range ships {
+			if count > 0 {
+				io.putStringAndIncrementLine(
+					fmt.Sprintf("%dx %s", count, currGame.GetPlayerFaction().GetDesignByIndex(designIndex).GetName()),
+					2)
+			}
+		}
+		io.putStringAndIncrementLine("What is your order?", 0)
+		io.currentUiLine++
 		for i, s := range menuStrs {
 			if i == cursorPos {
 				io.setStyle(tcell.ColorBlack, tcell.ColorBeige)
 			} else {
 				io.setStyle(tcell.ColorBeige, tcell.ColorBlack)
 			}
-			io.putString(s, 1, line)
-			line++
+			io.putStringAndIncrementLine(s, 1)
 		}
 
 		io.screen.Show()
@@ -115,8 +125,14 @@ func (ui *uiStruct) selectOrderForFleet(f *game.Fleet) {
 			return
 		case "UP":
 			cursorPos--
+			if cursorPos < 0 {
+				cursorPos = 2
+			}
 		case "DOWN":
 			cursorPos++
+			if cursorPos > 2 {
+				cursorPos = 0
+			}
 		case "ENTER":
 			switch cursorPos {
 			case 0:

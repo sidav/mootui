@@ -8,6 +8,7 @@ import (
 
 type consoleIO struct {
 	offsetX, offsetY int
+	currentUiLine    int
 	style            tcell.Style
 	screen           tcell.Screen
 }
@@ -17,6 +18,7 @@ func (c *consoleIO) getConsoleSize() (int, int) {
 }
 
 func (c *consoleIO) clearScreen() {
+	c.currentUiLine = 0
 	io.screen.Clear()
 	cw, ch := c.getConsoleSize()
 	io.setStyle(tcell.ColorBlack, tcell.ColorBlack)
@@ -89,6 +91,13 @@ func (c *consoleIO) putString(str string, x, y int) {
 	}
 }
 
+func (c *consoleIO) putStringAndIncrementLine(str string, x int) {
+	for i := 0; i < len(str); i++ {
+		c.screen.SetCell(x+i+c.offsetX, c.currentUiLine+c.offsetY, c.style, rune(str[i]))
+	}
+	c.currentUiLine++
+}
+
 func (c *consoleIO) setStyle(fg, bg tcell.Color) {
 	c.style = c.style.Background(bg).Foreground(fg)
 }
@@ -118,4 +127,9 @@ func (c *consoleIO) drawRect(fx, fy, w, h int) {
 
 func (c *consoleIO) drawStringCenteredAround(s string, x, y int) {
 	c.putString(s, x-len(s)/2, y)
+}
+
+func (c *consoleIO) drawStringCenteredAndIncrementLine(s string, x int) {
+	c.drawStringCenteredAround(s, x, c.currentUiLine)
+	c.currentUiLine++
 }
